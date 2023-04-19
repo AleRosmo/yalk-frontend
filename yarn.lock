@@ -1814,6 +1814,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@chakra-ui/icons@npm:^2.0.18":
+  version: 2.0.18
+  resolution: "@chakra-ui/icons@npm:2.0.18"
+  dependencies:
+    "@chakra-ui/icon": 3.0.16
+  peerDependencies:
+    "@chakra-ui/system": ">=2.0.0"
+    react: ">=18"
+  checksum: c3967af062f5808486cda6ce72a68e8279882f071c6ff715d4f669257280f8d8685fe8b4efe1a914d227c34446da51acc9ef4cc5ef13801cf453b27e8eabf3e9
+  languageName: node
+  linkType: hard
+
 "@chakra-ui/image@npm:2.0.15":
   version: 2.0.15
   resolution: "@chakra-ui/image@npm:2.0.15"
@@ -2466,7 +2478,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@chakra-ui/styled-system@npm:2.8.0":
+"@chakra-ui/styled-system@npm:2.8.0, @chakra-ui/styled-system@npm:^2.8.0":
   version: 2.8.0
   resolution: "@chakra-ui/styled-system@npm:2.8.0"
   dependencies:
@@ -2594,7 +2606,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@chakra-ui/theme@npm:3.0.1":
+"@chakra-ui/theme@npm:3.0.1, @chakra-ui/theme@npm:^3.0.1":
   version: 3.0.1
   resolution: "@chakra-ui/theme@npm:3.0.1"
   dependencies:
@@ -4410,7 +4422,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:^5.5.0":
+"@typescript-eslint/parser@npm:^5.5.0, @typescript-eslint/parser@npm:^5.59.0":
   version: 5.59.0
   resolution: "@typescript-eslint/parser@npm:5.59.0"
   dependencies:
@@ -5581,7 +5593,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"camelcase@npm:^5.0.0, camelcase@npm:^5.3.1":
+"camelcase@npm:^5.3.1":
   version: 5.3.1
   resolution: "camelcase@npm:5.3.1"
   checksum: e6effce26b9404e3c0f301498184f243811c30dfe6d0b9051863bd8e4034d09c8c2923794f280d6827e5aa055f6c434115ff97864a16a963366fb35fd673024b
@@ -7076,6 +7088,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-plugin-chakra-ui@npm:^0.8.0":
+  version: 0.8.0
+  resolution: "eslint-plugin-chakra-ui@npm:0.8.0"
+  dependencies:
+    "@typescript-eslint/utils": ^5.58.0
+  peerDependencies:
+    eslint: ">=6"
+  checksum: b8643816a59c9a8dfb73b43fa861d252d6b91cda1cbbc67aaf2b30b6c6116a78ea111811d54cfc9c7a7c3bbdddc4dbc5bffed08a5ee95275aa14544c7cf3134e
+  languageName: node
+  linkType: hard
+
 "eslint-plugin-flowtype@npm:^8.0.3":
   version: 8.0.3
   resolution: "eslint-plugin-flowtype@npm:8.0.3"
@@ -7253,7 +7276,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^8.3.0":
+"eslint@npm:^8.3.0, eslint@npm:^8.38.0":
   version: 8.38.0
   resolution: "eslint@npm:8.38.0"
   dependencies:
@@ -12188,14 +12211,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-icons@npm:^3.0.0":
-  version: 3.11.0
-  resolution: "react-icons@npm:3.11.0"
-  dependencies:
-    camelcase: ^5.0.0
+"react-icons@npm:^4.8.0":
+  version: 4.8.0
+  resolution: "react-icons@npm:4.8.0"
   peerDependencies:
     react: "*"
-  checksum: 2d45d47387aa85692ee431abe814c3984bc303b0ff25146de86a3cecf7f144c75bc9755df296c626bf133a05622b812fbf95d99776d9a92c7edd90fa7fbbead1
+  checksum: 4dbba7ad989c295b410e19b2a702722dae44368cb04b6515f9471353552f31ac80bd350f121d5bff79f81504b84039ede44d09e9f035f48bb1032e6eace126c4
   languageName: node
   linkType: hard
 
@@ -14842,16 +14863,22 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "yalk-frontend@workspace:."
   dependencies:
+    "@chakra-ui/icons": ^2.0.18
     "@chakra-ui/react": latest
+    "@chakra-ui/styled-system": ^2.8.0
+    "@chakra-ui/theme": ^3.0.1
     "@emotion/react": ^11.0.0
     "@emotion/styled": ^11.0.0
     "@testing-library/jest-dom": ^5.16.4
     "@testing-library/react": ^13.0.1
     "@testing-library/user-event": ^14.1.0
+    "@typescript-eslint/parser": ^5.59.0
+    eslint: ^8.38.0
+    eslint-plugin-chakra-ui: ^0.8.0
     framer-motion: ^6.2.9
     react: ^18.2.0
     react-dom: ^18.2.0
-    react-icons: ^3.0.0
+    react-icons: ^4.8.0
     react-router-dom: ^6.10.0
     react-scripts: 5.0.1
     web-vitals: ^2.1.4
