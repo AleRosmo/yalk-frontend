@@ -4,7 +4,7 @@ import { BiLogOut } from 'react-icons/bi';
 import Avatar from '../Avatar/Avatar';
 function ProfileRow() {
   return (
-    <Flex p="10px" border="2px solid orange" justify={"space-evenly"}>
+    <Flex w={"full"} p="10px" border="2px solid orange" justify={"space-between"} align={"center"}>
       <Avatar />
       <Text color="white" border="2px solid purple">
         Asd

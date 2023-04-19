@@ -15,6 +15,7 @@ export const Sidebar = () => {
       align="center"
       minH="full"
       border="2px solid red"
+      w={"full"}
     >
       <Heading color="teal">Sidebar</Heading>
       <VStack align="right" w={'full'}>

@@ -5,7 +5,6 @@ const Avatar = () => {
     <Box border="2px solid white">
       <Image
         boxSize={'48px'}
-        src="default.png"
         borderRadius={'full'}
         opacity={'1'}
         _hover={{
