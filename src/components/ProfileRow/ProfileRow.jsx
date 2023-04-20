@@ -1,11 +1,11 @@
 // This component must
 import { Box, Flex, IconButton, Image, Text } from '@chakra-ui/react';
 import { BiLogOut } from 'react-icons/bi';
-import Avatar from '../Avatar/Avatar';
+import AvatarHover from '../AvatarHover/AvatarHover';
 function ProfileRow() {
   return (
     <Flex w={"full"} p="10px" border="2px solid orange" justify={"space-between"} align={"center"}>
-      <Avatar />
+      <AvatarHover />
       <Text color="white" border="2px solid purple">
         Asd
       </Text>

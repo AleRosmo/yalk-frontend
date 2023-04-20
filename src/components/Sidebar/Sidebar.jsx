@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Spacer,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import { Button, Flex, Heading, Spacer, VStack } from '@chakra-ui/react';
 import ProfileRow from '../ProfileRow/ProfileRow';
 export const Sidebar = () => {
   return (
@@ -15,7 +7,7 @@ export const Sidebar = () => {
       align="center"
       minH="full"
       border="2px solid red"
-      w={"full"}
+      w={'full'}
     >
       <Heading color="teal">Sidebar</Heading>
       <VStack align="right" w={'full'}>

@@ -1,20 +1,18 @@
-import { Box, Image } from '@chakra-ui/react';
+import { Avatar, Box } from '@chakra-ui/react';
 
-const Avatar = () => {
+const AvatarHover = () => {
   return (
     <Box border="2px solid white">
-      <Image
-        boxSize={'48px'}
-        borderRadius={'full'}
+      <Avatar
         opacity={'1'}
         _hover={{
           transitionDuration: '100ms',
           opacity: 0.5,
           cursor: 'pointer',
         }}
-      ></Image>
+      ></Avatar>
     </Box>
   );
 };
 
-export default Avatar;
+export default AvatarHover;
