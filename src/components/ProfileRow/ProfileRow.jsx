@@ -4,13 +4,10 @@ import { BiLogOut } from 'react-icons/bi';
 import AvatarHover from '../AvatarHover/AvatarHover';
 function ProfileRow() {
   return (
-    <Flex w={"full"} p="10px" border="2px solid orange" justify={"space-between"} align={"center"}>
+    <Flex w={'full'} p="10px" justify={'space-between'} align={'center'}>
       <AvatarHover />
-      <Text color="white" border="2px solid purple">
-        Asd
-      </Text>
+      <Text color="white">Asd</Text>
       <IconButton
-        border={'2px solid green'}
         variant="ghost"
         colorScheme="teal"
         icon={<BiLogOut size="20" />}

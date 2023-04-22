@@ -1,5 +1,15 @@
-import { Button, Flex, Heading, Spacer, VStack } from '@chakra-ui/react';
+import { AtSignIcon, ChatIcon, PlusSquareIcon } from '@chakra-ui/icons';
+import {
+  Button,
+  Flex,
+  HStack,
+  Heading,
+  IconButton,
+  Spacer,
+  VStack,
+} from '@chakra-ui/react';
 import { isValidMotionProp, motion } from 'framer-motion';
+
 import ProfileRow from '../ProfileRow/ProfileRow';
 export const Sidebar = () => {
   return (
@@ -7,18 +17,54 @@ export const Sidebar = () => {
       flexDirection="column"
       align="center"
       minH="full"
-      border="2px solid red"
       w={'full'}
+      gap={'10px'}
+      flexGrow={100}
     >
-      <Heading color="teal">Sidebar</Heading>
-      <VStack align="right" w={'full'}>
-        <Button mt={'10px'} variant="ghost" colorScheme="teal">
-          Test1
+      <Heading as={'h1'} color="teal">
+        Sidebar
+      </Heading>
+      <VStack>
+        <Button variant="ghost" colorScheme="teal" w={'full'}>
+          Test2
         </Button>
-        <Button variant="ghost" colorScheme="teal">
+        <Button variant="ghost" colorScheme="teal" w={'full'}>
           Test2
         </Button>
       </VStack>
+
+      {/* Channels */}
+      <HStack w={'full'}>
+        <Heading as={'h2'} size={'md'} color="teal" align={'right'}>
+          <ChatIcon /> Channels
+        </Heading>
+        <IconButton
+          variant={'ghost'}
+          colorScheme={'teal'}
+          icon={<PlusSquareIcon color={'teal'} />}
+        />
+      </HStack>
+
+      {/* Dms */}
+      <HStack w={'full'}>
+        <Heading as={'h2'} size={'md'} color="teal" align={'right'}>
+          <AtSignIcon /> Direct Messages
+          <IconButton
+            variant={'ghost'}
+            colorScheme={'teal'}
+            icon={<PlusSquareIcon color={'teal'} />}
+          />
+        </Heading>
+
+        <Heading
+          as={'h2'}
+          size={'md'}
+          color="teal"
+          align={'right'}
+          w={'full'}
+        ></Heading>
+      </HStack>
+
       <Button
         as={motion.button}
         variant="solid"
@@ -31,7 +77,7 @@ export const Sidebar = () => {
       >
         Test Framer
       </Button>
-      <Spacer border="2px solid green" />
+      <Spacer />
       <ProfileRow />
     </Flex>
   );
