@@ -1,12 +1,13 @@
 import { Avatar, Button, Flex, IconButton, Text } from '@chakra-ui/react';
 import { FaHashtag } from 'react-icons/fa';
 
-export function ChatListButton({ id, name, type }) {
+export function ChatListButton({ id, name, type, isActive }) {
   return (
     <IconButton
       variant="ghost"
       w={'full'}
       justifyContent={'flex-start'}
+      isActive={isActive}
       // key={id}
       icon={
         type === 'channels' ? (

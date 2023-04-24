@@ -40,8 +40,16 @@ export const ChatList = ({ type, chats }) => (
     <AccordionPanel pb={4}>
       {chats.map(chat => (
         <NavLink to={`/chat/${chat.id}`} key={chat.id}>
-        {/* {({isActive, isPending})} */}
-          <ChatListButton name={chat.name} type={type} />
+          {/* //!TODO isPending Skeleton Loader */}
+          {({ isActive, isPending }) => {
+            return (
+              <ChatListButton
+                name={chat.name}
+                type={type}
+                isActive={isActive}
+              />
+            );
+          }}
         </NavLink>
       ))}
     </AccordionPanel>
