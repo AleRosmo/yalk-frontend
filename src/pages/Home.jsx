@@ -1,3 +1,4 @@
+import { Center, Flex, Heading } from '@chakra-ui/react';
 import React, { useEffect, useRef } from 'react';
 import { MessageRow } from '../components/MessageRow/MessageRow';
 import { useAxiosFetch } from '../hooks/useAxiosFetch';
@@ -10,7 +11,6 @@ function Home() {
   );
 
   const [count, resetCount] = useRenderCount();
-  // useEffect(() => console.log(count), []);
 
   useEffect(() => {
     console.log(data ?? 'loading..');
@@ -20,21 +20,11 @@ function Home() {
 
   return (
     <>
+      <Flex bg={'teal'} w={'full'} px="10px" borderTopRadius={'15px'}>
+        <Heading color={'gray.800'}># Chat Title</Heading>
+      </Flex>
       <MessageRow username={'Alice'} message={'Message Text'} />
-      <MessageRow
-        username={'Bob'}
-        message={'Ho spaccato il cazzo nel culo di mia moglie ieri'}
-      />
-      <MessageRow username={'Cristo di dio'} message={'OOOOOOOOOOH'} />
-      <MessageRow
-        username={'Daniel'}
-        message={'Ruberò i tuoi reni entro 3 giorni'}
-      />
-      <MessageRow
-        username={'Elon Musk'}
-        message={'I shat myself while buying Twitter'}
-      />
-      <MessageRow username={'Fayood'} message={'الله أكبر'} />
+      <MessageRow username={'Bob'} message={'Another message'} />
     </>
   );
 }
