@@ -1,14 +1,8 @@
-import { AddIcon, AtSignIcon, ChatIcon, HamburgerIcon } from '@chakra-ui/icons';
+import { HamburgerIcon } from '@chakra-ui/icons';
 import {
   Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Box,
   Button,
   Flex,
-  Heading,
   IconButton,
   Spacer,
   VStack,
@@ -17,6 +11,7 @@ import { isValidMotionProp, motion } from 'framer-motion';
 import { useState } from 'react';
 import { useToggle } from '../../hooks/useToggle';
 import ProfileRow from '../ProfileRow/ProfileRow';
+import { ChatList } from './ChatList';
 
 export const Sidebar = () => {
   const [isSmall, toggleOpen] = useToggle();
@@ -78,6 +73,16 @@ export const Sidebar = () => {
           />
 
           {/* Dms */}
+          <ChatList
+            type="directs"
+            chats={[
+              {
+                id: 3,
+                name: 'shurizzle',
+              },
+              { id: 4, name: 'zL1ghT_' },
+            ]}
+          />
         </Accordion>
 
         <Button
@@ -101,48 +106,3 @@ export const Sidebar = () => {
 };
 
 export default Sidebar;
-
-const ChatList = ({ type, chats }) => (
-  <AccordionItem>
-    <Heading as={'h2'}>
-      <AccordionButton>
-        <Box as="span" flex="1" textAlign="left">
-          <Heading as={'h2'} size={'sm'}>
-            {type === 'channels' ? (
-              <>
-                <ChatIcon /> {'Channels'}
-              </>
-            ) : (
-              <>
-                <AtSignIcon /> {'Directs'}
-              </>
-            )}
-            <AccordionIcon />
-          </Heading>
-        </Box>
-        <IconButton
-          as={'span'}
-          size={'xs'}
-          icon={<AddIcon />}
-          onClick={e => e.stopPropagation()}
-        />
-      </AccordionButton>
-    </Heading>
-    <AccordionPanel pb={4}>
-      {chats.map((chat, i) => (
-        <ChatListButton key={chat.id} name={chat.name} type={type} />
-      ))}
-      {/* <Button variant="ghost" w={'full'}>
-          Test2
-        </Button> */}
-    </AccordionPanel>
-  </AccordionItem>
-);
-
-function ChatListButton({ key, name, type }) {
-  return (
-    <Button variant="ghost" w={'full'} justifyContent={'flex-start'} key={key}>
-      {name}
-    </Button>
-  );
-}

@@ -4,6 +4,7 @@ import { MessageRow } from '../components/MessageRow/MessageRow';
 import { useAxiosFetch } from '../hooks/useAxiosFetch';
 import { useFetch } from '../hooks/useFetch';
 import { useRenderCount } from '../hooks/useRenderCount';
+// import { ChatBox } from '../layouts/ChatBox';
 
 function Home() {
   const [data, isError, isPending] = useAxiosFetch(
@@ -19,13 +20,7 @@ function Home() {
   }, [data, isError, isPending]);
 
   return (
-    <>
-      <Flex bg={'teal'} w={'full'} px="10px" borderTopRadius={'15px'}>
-        <Heading color={'gray.800'}># Chat Title</Heading>
-      </Flex>
-      <MessageRow username={'Alice'} message={'Message Text'} />
-      <MessageRow username={'Bob'} message={'Another message'} />
-    </>
+    <Text>Palle</Text>
   );
 }
 

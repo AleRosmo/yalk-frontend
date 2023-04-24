@@ -1,9 +1,32 @@
 import { Flex } from '@chakra-ui/react';
 import { LayoutGroup, motion } from 'framer-motion';
+import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 
+// const Profile = {
+//   Id,
+//   Username,
+//   DisplayedName,
+//   AvatarUrl,
+//   LastOffline,
+//   LastOnline,
+//   IsAdmin,
+// };
+
+// const Chat = {
+//   Id,
+//   Type,
+//   Name,
+//   Created,
+//   Members,
+//   IsPublic, // ? Possibly merge with "type"
+//   Messages,
+// };
+
 function RootLayout() {
+  const [selectedChat, setSelectedChat] = useState();
+
   return (
     <Flex
       bg={'gray.700'}

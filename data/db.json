@@ -1,0 +1,36 @@
+{
+  "channels": [
+    {
+      "id": 1,
+      "name": "test"
+    },
+    {
+      "id": 2,
+      "name": "altrotest"
+    }
+  ],
+  "directs": [
+    {
+      "id": 3,
+      "name": "shurizzle"
+    },
+    {
+      "id": 4,
+      "name": "zL1ghT_"
+    }
+  ],
+  "chat": [
+    {
+      "id": 1,
+      "type": "channel_pub",
+      "name": "test",
+      "messages": [{ "id": 1, "username": "shurizzle", "text": "Prova" }]
+    },
+    {
+      "id": 2,
+      "type": "channel_pub",
+      "name": "test2",
+      "messages": [{ "id": 1, "username": "zL1ghT_", "text": "Test" }]
+    }
+  ]
+}

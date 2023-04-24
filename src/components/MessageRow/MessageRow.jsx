@@ -1,15 +1,8 @@
-import {
-  Card,
-  Container,
-  Divider,
-  Flex,
-  Heading,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
-import { motion } from 'framer-motion';
+import { Flex, Heading, Text, VStack } from '@chakra-ui/react';
+
 import React from 'react';
 import AvatarHover from '../AvatarHover/AvatarHover';
+
 export const MessageRow = ({ username, message }) => {
   return (
     // TODO: Cards instead of flex
