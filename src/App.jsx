@@ -1,13 +1,13 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 // `@chakra-ui/theme` is a part of the base install with `@chakra-ui/react`
-import RootLayout from './layouts/RootLayout';
+import ChatLayout, { SidebarLoader } from './layouts/ChatLayout';
 import Chat, { ChatLoader } from './pages/Chat';
 import Home from './pages/Home';
-
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <RootLayout />,
+    element: <ChatLayout />,
+    loader: SidebarLoader,
     children: [
       {
         index: true,

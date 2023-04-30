@@ -1,36 +1,35 @@
 {
-  "channels": [
-    {
-      "id": 1,
-      "name": "test"
-    },
-    {
-      "id": 2,
-      "name": "altrotest"
-    }
-  ],
-  "directs": [
-    {
-      "id": 3,
-      "name": "shurizzle"
-    },
-    {
-      "id": 4,
-      "name": "zL1ghT_"
-    }
-  ],
   "chat": [
     {
       "id": 1,
       "type": "channel_pub",
       "name": "test",
-      "messages": [{ "id": 1, "username": "shurizzle", "text": "Prova" }]
+      "messages": [
+        { "id": 1, "username": "shurizzle", "text": "Prova" },
+        { "id": 2, "username": "shurizzle", "text": "Prova2" },
+        { "id": 3, "username": "shurizzle", "text": "3" }
+      ]
     },
     {
       "id": 2,
       "type": "channel_pub",
       "name": "test2",
-      "messages": [{ "id": 1, "username": "zL1ghT_", "text": "Test" }]
+      "messages": [
+        { "id": 1, "username": "zL1ghT_", "text": "Testttt" },
+        { "id": 2, "username": "zL1ghT_", "text": "Test2" },
+        { "id": 3, "username": "zL1ghT_", "text": "Tes3qedq2" }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "direct",
+      "messages": [
+        { "id": 1, "username": "zL1ghT_", "text": "We" },
+        { "id": 2, "username": "zL1ghT_", "text": "we di nuovo" },
+        { "id": 3, "username": "zL1ghT_", "text": "we ancora una volta" }
+      ]
     }
-  ]
+  ],
+
+  "profile": [{ "id": "self", "username": "Boh", "joinedChats": [1, 2, 4] }]
 }

@@ -1,6 +1,7 @@
 {
   "name": "yalk-frontend",
   "version": "0.1.0",
+  "proxy": "http://localhost:8080/",
   "private": true,
   "dependencies": {
     "@chakra-ui/icons": "^2.0.18",
@@ -24,6 +25,7 @@
     "react-icons": "^4.8.0",
     "react-router-dom": "^6.10.0",
     "react-scripts": "5.0.1",
+    "react-use-websocket": "^4.3.1",
     "storybook": "latest",
     "web-vitals": "^2.1.4"
   },
