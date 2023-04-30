@@ -3,6 +3,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import ChatLayout, { SidebarLoader } from './layouts/ChatLayout';
 import Chat, { ChatLoader } from './pages/Chat';
 import Home from './pages/Home';
+
 const router = createBrowserRouter([
   {
     path: '/',

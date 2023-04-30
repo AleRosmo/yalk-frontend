@@ -29,13 +29,6 @@ function ChatLayout() {
   const [messageHistory, setMessageHistory] = useState([]);
   const { profile, chats } = useLoaderData();
 
-  const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
-    'ws://localhost:8080/ws',
-    {
-      share: true,
-    }
-  );
-
   useEffect(() => {
     if (lastJsonMessage !== null) {
       console.log(lastJsonMessage);
@@ -83,8 +76,9 @@ function ChatLayout() {
 
 export default ChatLayout;
 
+// ! ALL BELOW THIS LINE WILL BE REMOVED
 export const SidebarLoader = async () => {
-  // const { id } = params;
+  const { id } = params;
 
   const profile = await getProfile();
 
