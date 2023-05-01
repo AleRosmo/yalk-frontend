@@ -1,5 +1,5 @@
-import React, { createContext } from 'react';
-
+import React, { createContext, useMemo } from 'react';
+import useWebSocket from 'react-use-websocket';
 // State should be contained here for the values concerning the context.
 
 // Context should be split into different context with single specific functions
@@ -11,14 +11,25 @@ import React, { createContext } from 'react';
 // ThemeContext, which will export custom hooks with value of theme and handler function
 // that sets the theme, along with returning a component wrapper for the context provider.
 
-const ChatContext = async url => {
-  return ({ sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(url, {
+const connectWebSocket = url => {
+  const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(url, {
     share: true,
-  }));
+  });
+
+  return {
+    sendJsonMessage,
+    lastJsonMessage,
+    readyState,
+    test: 'Yes',
+  };
 };
 
-export default function ChatProvider({ children }) {
+export const ChatContext = createContext();
+
+export default function ChatProvider({ url, children }) {
+  const context = connectWebSocket(url);
+
   return (
-    <ChatContext.Provider value={ChatContext}>{children}</ChatContext.Provider>
+    <ChatContext.Provider value={context}>{children}</ChatContext.Provider>
   );
 }

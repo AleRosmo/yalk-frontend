@@ -1,9 +1,10 @@
 import { Flex } from '@chakra-ui/react';
 import { LayoutGroup, motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Outlet, useLoaderData } from 'react-router-dom';
 import useWebSocket from 'react-use-websocket';
 import Sidebar from '../components/Sidebar';
+import { ChatContext } from '../context/ChatContext';
 
 // const Profile = {
 //   Id,
@@ -26,25 +27,8 @@ import Sidebar from '../components/Sidebar';
 // };
 
 function ChatLayout() {
-  const [messageHistory, setMessageHistory] = useState([]);
   const { profile, chats } = useLoaderData();
-
-  useEffect(() => {
-    if (lastJsonMessage !== null) {
-      console.log(lastJsonMessage);
-      setMessageHistory(prev =>
-        prev ? prev.concat(lastJsonMessage) : lastJsonMessage
-      );
-    }
-
-    return () => {
-      setMessageHistory(prev => {
-        prev ? prev.pop() : null;
-      });
-    };
-  }, [lastJsonMessage, setMessageHistory]);
-
-  useEffect(() => console.log(readyState), [readyState]);
+  const context = useContext(ChatContext)
 
   return (
     <Flex
@@ -67,7 +51,7 @@ function ChatLayout() {
           borderRadius={'15px'}
           w={'full'}
         >
-          <Outlet />
+          <Outlet context={context}/>
         </Flex>
       </LayoutGroup>
     </Flex>
@@ -77,7 +61,7 @@ function ChatLayout() {
 export default ChatLayout;
 
 // ! ALL BELOW THIS LINE WILL BE REMOVED
-export const SidebarLoader = async () => {
+export const SidebarLoader = async ({ params }) => {
   const { id } = params;
 
   const profile = await getProfile();

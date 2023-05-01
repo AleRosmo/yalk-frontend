@@ -5,7 +5,7 @@ import { useLoaderData, useParams } from 'react-router-dom';
 import { MessageRow } from '../components/MessageRow/MessageRow';
 
 export default function Chat() {
-  const { id } = useParams();
+  // const { id } = useParams();
   const chat = useLoaderData();
 
   return (
