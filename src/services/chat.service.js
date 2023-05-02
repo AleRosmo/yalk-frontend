@@ -32,7 +32,7 @@ export class ChatService {
       switch (data.type) {
         case 'channel_message':
           console.log('we received a connection evenet');
-          console.log( data );
+          console.log(data);
           break;
         default:
           console.log(`Received unknown type: ${data.type}`);
