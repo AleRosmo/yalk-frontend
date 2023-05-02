@@ -15502,16 +15502,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-use-websocket@npm:^4.3.1":
-  version: 4.3.1
-  resolution: "react-use-websocket@npm:4.3.1"
-  peerDependencies:
-    react: ">= 18.0.0"
-    react-dom: ">= 18.0.0"
-  checksum: 6febb76b462e68fddc8021f155f914124afce6dad42ed3807794532a208263a4946a69f1783d81faf0aba83677bd14f973b4ebdbd79dcd35a6f67b679d199c51
-  languageName: node
-  linkType: hard
-
 "react@npm:^18.2.0":
   version: 18.2.0
   resolution: "react@npm:18.2.0"
@@ -18620,7 +18610,6 @@ __metadata:
     react-icons: ^4.8.0
     react-router-dom: ^6.10.0
     react-scripts: 5.0.1
-    react-use-websocket: ^4.3.1
     storybook: latest
     web-vitals: ^2.1.4
     webpack: ^5.80.0

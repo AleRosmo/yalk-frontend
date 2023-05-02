@@ -13,4 +13,8 @@ function Home() {
   return <Text color={'white'}>{context.test}</Text>;
 }
 
+export const HomeLoader = () => {
+  return <div>Home</div>;
+};
+
 export default Home;

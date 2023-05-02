@@ -1,11 +1,9 @@
 import { Flex } from '@chakra-ui/react';
 import { LayoutGroup, motion } from 'framer-motion';
 import { useContext, useEffect, useState } from 'react';
-import { Outlet, useLoaderData } from 'react-router-dom';
-import useWebSocket from 'react-use-websocket';
+import { Outlet, useLoaderData, useParams } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
-import { ChatContext } from '../context/ChatContext';
-
+import ChatProvider, { ChatContext, useChat } from '../context/ChatContext';
 // const Profile = {
 //   Id,
 //   Username,
@@ -26,9 +24,17 @@ import { ChatContext } from '../context/ChatContext';
 //   Messages,
 // };
 
-function ChatLayout() {
+
+export default function ChatLayout() {
   const { profile, chats } = useLoaderData();
-  const context = useContext(ChatContext)
+  const chatService = useChat();
+
+  useEffect(() => {
+    chatService.connect('ws://localhost:8080/ws');
+    return () => {
+      chatService.disconnect();
+    };
+  }, []);
 
   return (
     <Flex
@@ -51,17 +57,20 @@ function ChatLayout() {
           borderRadius={'15px'}
           w={'full'}
         >
-          <Outlet context={context}/>
+          <Outlet context={chatService} />
         </Flex>
       </LayoutGroup>
     </Flex>
   );
 }
 
-export default ChatLayout;
+export const ChatLayoutLoader = ({ params }) => {};
 
 // ! ALL BELOW THIS LINE WILL BE REMOVED
 export const SidebarLoader = async ({ params }) => {
+  // const websocket = chatService;
+  // chatService.connect();
+
   const { id } = params;
 
   const profile = await getProfile();
@@ -70,6 +79,7 @@ export const SidebarLoader = async ({ params }) => {
 
   return { profile, chats };
 };
+
 async function getChats(chats) {
   return await chats.map(async chatId => {
     const response = await fetch(`http://localhost:4000/chat/${chatId}`);

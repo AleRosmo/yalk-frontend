@@ -4,6 +4,7 @@ import {
   useOutletContext,
 } from 'react-router-dom';
 // `@chakra-ui/theme` is a part of the base install with `@chakra-ui/react`
+
 import ChatProvider from './context/ChatContext';
 import ChatLayout, { SidebarLoader } from './layouts/ChatLayout';
 import Chat, { ChatLoader } from './pages/Chat';
@@ -30,8 +31,16 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  // const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
+  //   'ws://localhost:8080/ws',
+  //   {
+  //     share: true,
+  //     // onMessage: handleMessage,
+  //   }
+  // );
+
   return (
-    <ChatProvider url={'ws://localhost:8080/ws'}>
+    <ChatProvider>
       <RouterProvider router={router} />
     </ChatProvider>
   );

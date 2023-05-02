@@ -31,5 +31,5 @@
     }
   ],
 
-  "profile": [{ "id": "self", "username": "Boh", "joinedChats": [1, 2, 4] }]
+  "profile": [{ "id": "self", "username": "Boh", "joinedChats": [1, 2, 3] }]
 }

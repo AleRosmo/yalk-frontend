@@ -1,15 +1,15 @@
 import { Avatar, Box } from '@chakra-ui/react';
 
-const AvatarHover = () => {
+const AvatarHover = ({src}) => {
   return (
     <Avatar
-      opacity={'1'}
+      src={src}
       _hover={{
         transitionDuration: '100ms',
         opacity: 0.5,
-        cursor: 'pointer',
+        cursor: 'pointer'
       }}
-    ></Avatar>
+    />
   );
 };
 

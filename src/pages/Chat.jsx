@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Flex, Heading } from '@chakra-ui/react';
-import { useLoaderData, useParams } from 'react-router-dom';
+import { useLoaderData, useOutletContext, useParams } from 'react-router-dom';
 import { MessageRow } from '../components/MessageRow/MessageRow';
 
 export default function Chat() {
@@ -25,13 +25,16 @@ export default function Chat() {
 }
 
 export const ChatLoader = async ({ params }) => {
-  const { id } = params;
+  const context = useOutletContext();
 
-  const response = await fetch(`http://localhost:4000/chat/${id}`);
+  console.log(context);
+  // const { id } = params;
 
-  if (!response.ok) {
-    throw Error('Could not find chat id');
-  }
+  // const response = await fetch(`http://localhost:4000/chat/${id}`);
 
-  return response.json();
+  // if (!response.ok) {
+  //   throw Error('Could not find chat id');
+  // }
+
+  // return response.json();
 };
