@@ -68,9 +68,6 @@ export const ChatLayoutLoader = ({ params }) => {};
 
 // ! ALL BELOW THIS LINE WILL BE REMOVED
 export const SidebarLoader = async ({ params }) => {
-  // const websocket = chatService;
-  // chatService.connect();
-
   const { id } = params;
 
   const profile = await getProfile();
