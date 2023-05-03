@@ -1,8 +1,22 @@
 export class ChatService {
   constructor() {
+    let conversations = new Map();
+
+    conversations['MAIN'] = {
+      title: 'TestChat',
+      name: 'name',
+      type: 'channel_pub',
+      users: ['Gino', 'Palle'],
+      messages: [
+        { id: '1', username: 'shurizzle', text: 'Go' },
+        { id: '2', username: 'shurizzle', text: 'Fa' },
+        { id: '3', username: 'shurizzle', text: 'Cagare' },
+      ],
+    };
+
     this.url = null;
     this.websocket = null;
-    this.conversations = {};
+    this.conversations = conversations;
     this.users = {};
     this.profile = {};
     this.settings = {};

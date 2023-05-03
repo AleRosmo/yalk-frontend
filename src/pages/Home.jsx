@@ -10,7 +10,8 @@ import { useRenderCount } from '../hooks/useRenderCount';
 function Home() {
   const context = useOutletContext();
 
-  return <Text color={'white'}>{context.test}</Text>;
+  return <div>Home</div>;
+  // return <Text color={'white'}>{context.test}</Text>;
 }
 
 export const HomeLoader = () => {
