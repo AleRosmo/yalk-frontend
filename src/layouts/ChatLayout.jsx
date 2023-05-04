@@ -24,17 +24,11 @@ import ChatProvider, { ChatContext, useChat } from '../context/ChatContext';
 //   Messages,
 // };
 
-
 export default function ChatLayout() {
   const { profile, chats } = useLoaderData();
   const chatService = useChat();
 
-  useEffect(() => {
-    chatService.connect('ws://localhost:8080/ws');
-    return () => {
-      chatService.disconnect();
-    };
-  }, []);
+
 
   return (
     <Flex
@@ -43,6 +37,7 @@ export default function ChatLayout() {
       h={'100vh'}
       gap={'10px'}
       justifyItems={'space-around'}
+      color={'gray.800'}
     >
       <LayoutGroup>
         <Sidebar profile={profile} chats={chats} />
@@ -77,15 +72,17 @@ export const SidebarLoader = async ({ params }) => {
   return { profile, chats };
 };
 
-async function getChats(chats) {
-  return await chats.map(async chatId => {
-    const response = await fetch(`http://localhost:4000/chat/${chatId}`);
-
-    if (!response.ok) {
-      throw Error('Could not find chat id');
-    }
-    return response.json();
-  });
+async function getChats(joinedChats) {
+  const chats = Promise.all(
+    joinedChats.map(async chatId => {
+      const response = await fetch(`http://localhost:4000/chat/${chatId}`);
+      if (!response.ok) {
+        throw Error('Could not find chat id');
+      }
+      return response.json();
+    })
+  );
+  return await chats;
 }
 
 async function getProfile() {
@@ -95,5 +92,5 @@ async function getProfile() {
     throw Error('Could not get profile');
   }
 
-  return response.json();
+  return await response.json();
 }

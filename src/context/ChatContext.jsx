@@ -17,9 +17,9 @@ export function useChat() {
   return useContext(ChatContext);
 }
 
-export default function ChatProvider({ children }) {
-  const [chatService] = useState(new ChatService());
+export default function ChatProvider({ context, children }) {
+  // const [chatService] = useState(context);
   return (
-    <ChatContext.Provider value={chatService}>{children}</ChatContext.Provider>
+    <ChatContext.Provider value={context}>{children}</ChatContext.Provider>
   );
 }
