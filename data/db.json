@@ -1,9 +1,9 @@
 {
   "chat": [
     {
-      "id": 1,
+      "id": "MAIN",
       "type": "channel_pub",
-      "name": "test",
+      "name": "Main",
       "messages": [
         { "id": 1, "username": "shurizzle", "text": "Prova" },
         { "id": 2, "username": "shurizzle", "text": "Prova2" },
@@ -11,7 +11,7 @@
       ]
     },
     {
-      "id": 2,
+      "id": "2",
       "type": "channel_pub",
       "name": "test2",
       "messages": [
@@ -31,5 +31,7 @@
     }
   ],
 
-  "profile": [{ "id": "self", "username": "Boh", "joinedChats": [1, 2, 3] }]
+  "profile": [
+    { "id": "self", "username": "Boh", "joinedChats": ["MAIN", 2, 3] }
+  ]
 }
