@@ -56,15 +56,7 @@ export class ChatService {
 
     this.websocket.onmessage = event => {
       const data = JSON.parse(event.data);
-
-      switch (data.type) {
-        case 'channel_message':
-          console.log('we received a connection evnet');
-          console.log(data);
-          break;
-        default:
-          console.log(`Received unknown type: ${data.type}`);
-      }
+      this.handleMessage(data);
     };
   }
 
@@ -77,12 +69,27 @@ export class ChatService {
 
   sendMessage(message) {
     if (this.websocket && this.websocket.readyState == WebSocket.OPEN) {
-      this.websocket.send(JSON.stringify(message));
+
+      const payload = {
+        type: 'channel_message',
+        sender: 'test',
+        payload: message,
+      };
+
+      this.websocket.send(JSON.stringify(payload));
       console.log(`Sent message: ${JSON.stringify(message)}`);
     }
   }
 
   handleMessage(message) {
-    const { chatId } = message.chatId;
+    switch (message.type) {
+      case 'channel_message':
+        console.log('we received a connection evnet');
+        console.log(message);
+        break;
+      default:
+        console.log(`Received unknown type: ${message.type}`);
+    }
+    console.log(`Got message: ${JSON.stringify(message)}`);
   }
 }
