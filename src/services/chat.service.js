@@ -2,6 +2,7 @@ export class ChatService {
   constructor() {
     let conversations = new Map();
 
+    // Remove
     conversations['MAIN'] = {
       title: 'TestChat',
       name: 'name',
@@ -11,6 +12,19 @@ export class ChatService {
         { id: '1', username: 'shurizzle', text: 'Go' },
         { id: '2', username: 'shurizzle', text: 'Fa' },
         { id: '3', username: 'shurizzle', text: 'Cagare' },
+      ],
+    };
+
+    // Remove
+    conversations['2'] = {
+      title: 'Test2',
+      name: 'name',
+      type: 'channel_pub',
+      users: ['Gino', 'Palle'],
+      messages: [
+        { id: '1', username: 'OU', text: 'ssss' },
+        { id: '2', username: 'O9OOOOOO', text: 'ffff' },
+        { id: '3', username: 'WWWWWWW', text: 'eeeeeeë' },
       ],
     };
 
@@ -45,7 +59,7 @@ export class ChatService {
 
       switch (data.type) {
         case 'channel_message':
-          console.log('we received a connection evenet');
+          console.log('we received a connection evnet');
           console.log(data);
           break;
         default:
