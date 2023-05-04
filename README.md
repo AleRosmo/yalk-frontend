@@ -1,3 +1,8 @@
+1. `json-server -p 4000 data/db.json -w`
+2. `npm start`
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
