@@ -10,7 +10,7 @@ export const MessageRow = ({ username, message }) => {
       align={'left'}
       gap={'10px'}
       p={'10px'}
-      _hover={{ backgroundColor: 'teal.700' }}
+      _hover={{ backgroundColor: 'teal.700', color: 'gray.400' }}
       color={'teal'}
     >
       <AvatarHover />
