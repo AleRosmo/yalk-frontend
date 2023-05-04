@@ -14,8 +14,14 @@ export default function Sidebar({ profile, chats }) {
     <SidebarContainer isSmall={isSmall}>
       <SidebarToggleButton toggleOpen={toggleOpen} />
       <Accordion allowMultiple color="teal" w={'full'}>
-        <ChatList type="channels" chats={chats} />
-        <ChatList type="directs" chats={chats} />
+        <ChatList
+          type="channels"
+          chats={chats.filter(chat => chat.type.includes('channel'))}
+        />
+        <ChatList
+          type="directs"
+          chats={chats.filter(chat => chat.type.includes('direct'))}
+        />
       </Accordion>
       <Spacer />
       <ProfileRow />
