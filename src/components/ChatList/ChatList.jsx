@@ -8,7 +8,7 @@ export const ChatList = ({ type, chats }) => (
     <ChatListHeading type={type} />
     <AccordionPanel pb={4}>
       {chats.map((chat, i) => (
-        <ChatListNavLink key={i} type={type} chat={chat}/>
+        <ChatListNavLink key={i} chat={chat}/>
       ))}
     </AccordionPanel>
   </AccordionItem>
