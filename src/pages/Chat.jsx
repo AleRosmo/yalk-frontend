@@ -1,48 +1,60 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 
-import { Flex, Heading } from '@chakra-ui/react';
+import { ChatIcon } from '@chakra-ui/icons';
+import { Flex, Heading, Icon, Spacer, Textarea } from '@chakra-ui/react';
 import { useOutletContext, useParams } from 'react-router-dom';
 import { MessageRow } from '../components/MessageRow/MessageRow';
-
-// TODO: Method on ChatService
-function getCurrentChat(id, context) {
-  context.conversations.forEach((chat, chatId) =>
-    chatId === id ? chat : null
-  );
-}
 
 export default function Chat() {
   const context = useOutletContext();
 
   const params = useParams();
-  const [title, setTitle] = useState();
-  const [currentChat, setCurrentChat] = useState(null);
+  const [chat, setChat] = useState(null);
 
   useLayoutEffect(() => {
-    setCurrentChat(context.conversations[params.id]);
-    console.log('Current chat: ', currentChat);
+    const chat = context.conversations[params.id];
+    setChat(chat);
 
     return () => {
-      setCurrentChat({});
+      setChat(null);
     };
   }, [params]);
 
-  console.log(context);
-  return (
-    <>
-      <Flex bg={'teal'} w={'full'} px="10px" borderTopRadius={'15px'}>
-        <Heading color={'gray.800'}>{title}</Heading>
-        {currentChat
-          ? currentChat.messages.map(message => (
-              <MessageRow
-                key={message.id}
-                username={message.username}
-                message={message.text}
-              />
-            ))
-          : null}
+  return chat ? (
+    <Flex h="full" flexDir={'column'}>
+      <Flex
+        bg={'teal'}
+        w={'full'}
+        px="10px"
+        borderTopRadius={'15px'}
+        align={'center'}
+        gap={'8px'}
+      >
+        <ChatIcon boxSize="28px" />
+        <Heading color={'gray.800'}>{chat.title}</Heading>
       </Flex>
-    </>
-  );
+      {chat.messages.map(message => (
+        <MessageRow
+          key={message.id}
+          username={message.username}
+          message={message.text}
+        />
+      ))}
+      <Spacer />
+      <Textarea
+        borderColor={'teal'}
+        color={'teal'}
+        variant={'outline'}
+        resize={'none'}
+        onKeyDown={e => {
+          // e.preventDefault();
+          if (e.key === 'Enter') {
+            context.sendMessage(e.target.value);
+          }
+        }}
+      />
+    </Flex>
+  ) : null;
 }
- 
+
+const handleKeyPress = e => {};
