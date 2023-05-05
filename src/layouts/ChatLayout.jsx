@@ -28,8 +28,6 @@ export default function ChatLayout() {
   const { profile, chats } = useLoaderData();
   const chatService = useChat();
 
-
-
   return (
     <Flex
       bg={'gray.700'}
