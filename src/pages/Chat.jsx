@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 
 import { ChatIcon } from '@chakra-ui/icons';
 import { Flex, Heading, Icon, Spacer, Textarea } from '@chakra-ui/react';
@@ -7,20 +7,52 @@ import { MessageRow } from '../components/MessageRow/MessageRow';
 
 export default function Chat() {
   const context = useOutletContext();
-
   const params = useParams();
-  const [chat, setChat] = useState(null);
+  const currentChat = useMemo(
+    () => context.conversations[params.id],
+    [params.id]
+  );
+
+  const [messageHistory, setMessageHistory] = useState(null);
+  const [messageTextValue, setMessageTextValue] = useState();
+
+  // TODO: Custom hook?
+  const handleKeyPress = e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      context.sendMessage(e.target.value);
+      setMessageTextValue('');
+    }
+  };
 
   useLayoutEffect(() => {
-    const chat = context.conversations[params.id];
-    setChat(chat);
+    setMessageHistory(() => makeChatRows(currentChat));
+
+    const messageListener = event => {
+      const message = JSON.parse(event.data);
+      if (message.receiver === currentChat.id) {
+        // console.log('SAME ID');
+        setMessageHistory(prevMessages => [
+          ...prevMessages,
+          <MessageRow
+            key={message.id}
+            sender={message.sender}
+            message={message.message}
+          />,
+        ]);
+      }
+    };
+
+    context.websocket.addEventListener('message', messageListener);
 
     return () => {
-      setChat(null);
+      setMessageHistory(null);
+      context.websocket.removeEventListener('message', messageListener);
     };
-  }, [params]);
+  }, [params.id, context.conversations[params.id]]);
 
-  return chat ? (
+  return (
+    // chat ? (
     <Flex h="full" flexDir={'column'}>
       <Flex
         bg={'teal'}
@@ -31,30 +63,31 @@ export default function Chat() {
         gap={'8px'}
       >
         <ChatIcon boxSize="28px" />
-        <Heading color={'gray.800'}>{chat.title}</Heading>
+        <Heading color={'gray.800'}>{currentChat.title}</Heading>
       </Flex>
-      {chat.messages.map(message => (
-        <MessageRow
-          key={message.id}
-          username={message.username}
-          message={message.text}
-        />
-      ))}
+      {messageHistory}
       <Spacer />
       <Textarea
-        borderColor={'teal'}
-        color={'teal'}
-        variant={'outline'}
+        borderColor={'gray.800'}
+        color={'gray.800'}
+        background={'teal'}
+        variant={'outlined'}
         resize={'none'}
-        onKeyDown={e => {
-          // e.preventDefault();
-          if (e.key === 'Enter') {
-            context.sendMessage(e.target.value);
-          }
-        }}
+        onChange={e => setMessageTextValue(e.target.value)}
+        value={messageTextValue}
+        onKeyDown={handleKeyPress}
       />
     </Flex>
-  ) : null;
+  );
+  // ) : null;
 }
 
-const handleKeyPress = e => {};
+function makeChatRows(chat) {
+  return chat.messages.map(message => (
+    <MessageRow
+      key={message.id}
+      sender={message.sender}
+      message={message.message}
+    />
+  ));
+}
