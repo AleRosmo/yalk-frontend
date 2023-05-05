@@ -10,7 +10,7 @@ const login = async (email, password) => {
 			withCredentials: true,
 		}
 	);
-	if (response.data.username) {
+	if (response.data.sender) {
 		localStorage.setItem("user", JSON.stringify(response.data));
 	}
 	return response.data;
