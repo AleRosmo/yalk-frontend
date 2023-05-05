@@ -9,9 +9,9 @@ export class ChatService {
       type: 'channel_pub',
       users: ['Gino', 'Palle'],
       messages: [
-        { id: '1', username: 'shurizzle', text: 'Go' },
-        { id: '2', username: 'shurizzle', text: 'Fa' },
-        { id: '3', username: 'shurizzle', text: 'Cagare' },
+        { id: '1', sender: 'shurizzle', message: 'Go' },
+        { id: '2', sender: 'shurizzle', message: 'Fa' },
+        { id: '3', sender: 'shurizzle', message: 'Cagare' },
       ],
     };
 
@@ -22,9 +22,9 @@ export class ChatService {
       type: 'channel_pub',
       users: ['Gino', 'Palle'],
       messages: [
-        { id: '1', username: 'OU', text: 'ssss' },
-        { id: '2', username: 'O9OOOOOO', text: 'ffff' },
-        { id: '3', username: 'WWWWWWW', text: 'eeeeeeë' },
+        { id: '1', sender: 'OU', message: 'ssss' },
+        { id: '2', sender: 'O9OOOOOO', message: 'ffff' },
+        { id: '3', sender: 'WWWWWWW', message: 'eeeeeeë' },
       ],
     };
 
@@ -57,6 +57,7 @@ export class ChatService {
     this.websocket.onmessage = event => {
       const data = JSON.parse(event.data);
       this.handleMessage(data);
+      console.log(this.conversations['MAIN']);
     };
   }
 
@@ -69,11 +70,13 @@ export class ChatService {
 
   sendMessage(message) {
     if (this.websocket && this.websocket.readyState == WebSocket.OPEN) {
-
       const payload = {
+        // ! CHANGE
+        id: String(Math.floor(Math.random() * 1000000)),
         type: 'channel_message',
         sender: 'test',
-        payload: message,
+        receiver: 'MAIN',
+        message: message,
       };
 
       this.websocket.send(JSON.stringify(payload));
@@ -84,7 +87,8 @@ export class ChatService {
   handleMessage(message) {
     switch (message.type) {
       case 'channel_message':
-        console.log('we received a connection evnet');
+        this.conversations['MAIN'].messages.push(message);
+        console.log('we received a connection event');
         console.log(message);
         break;
       default:
