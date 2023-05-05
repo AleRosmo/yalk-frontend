@@ -2,7 +2,7 @@
 import { Box, Flex, IconButton, Image, Text } from '@chakra-ui/react';
 import { BiLogOut } from 'react-icons/bi';
 import AvatarHover from '../AvatarHover/AvatarHover';
-function ProfileRow({ avatarUrl, username }) {
+function ProfileRow({ avatarUrl, sender }) {
   return (
     <Flex
       w={'full'}
@@ -13,7 +13,7 @@ function ProfileRow({ avatarUrl, username }) {
       rounded={'15px'}
     >
       <AvatarHover src={avatarUrl}/>
-      <Text color="white">{username}</Text>
+      <Text color="white">{sender}</Text>
       <IconButton variant="ghost" icon={<BiLogOut size="20" />} />
     </Flex>
   );

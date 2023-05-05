@@ -3,7 +3,7 @@ import { Flex, Heading, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import AvatarHover from '../AvatarHover/AvatarHover';
 
-export const MessageRow = ({ username, message }) => {
+export const MessageRow = ({ sender, message }) => {
   return (
     // TODO: Cards instead of flex
     <Flex
@@ -16,7 +16,7 @@ export const MessageRow = ({ username, message }) => {
       <AvatarHover />
       <VStack align={'left'}>
         <Heading fontSize={'20px'} fontWeight={'bold'}>
-          {username}
+          {sender}
         </Heading>
         <Text>{message}</Text>
       </VStack>
