@@ -7,7 +7,7 @@ function ProfileRow({ avatarUrl, sender }) {
     <Flex
       w={'full'}
       p="10px"
-      align={'flex-start'}
+      align={'center'}
       justify={'space-between'}
       bg={'gray.700'}
       rounded={'15px'}
