@@ -30,7 +30,7 @@ export default function Chat() {
   const handleKeyPress = event => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      context.sendMessage(currentChat.id, event.target.value);
+      context.sendMessage(currentChat.id, messageTextValue);
       setMessageTextValue('');
     }
   };
@@ -73,20 +73,20 @@ export default function Chat() {
       <ChatHeader title={currentChat.title} />
       {messageHistory}
       <Spacer />
-      <Box margin={"10px"}>
-      <Textarea
-        // borderColor={'gray.400'}
-        
-        color={'teal.300'}
-        background={'gray.800'}
-        // variant={'outlined'}
-        resize={'none'}
-        onChange={e => setMessageTextValue(e.target.value)}
-        value={messageTextValue}
-        onKeyDown={handleKeyPress}
-        placeholder={"Uhm.."}
-        _placeholder={{color: "teal.700"}}
-      />
+      <Box margin={'10px'}>
+        <Textarea
+          // borderColor={'gray.400'}
+
+          color={'teal.300'}
+          background={'gray.800'}
+          // variant={'outlined'}
+          resize={'none'}
+          onChange={e => setMessageTextValue(e.target.value)}
+          value={messageTextValue}
+          onKeyDown={handleKeyPress}
+          placeholder={'Uhm..'}
+          _placeholder={{ color: 'teal.700' }}
+        />
       </Box>
     </Flex>
   );
