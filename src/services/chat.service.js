@@ -4,27 +4,27 @@ export class ChatService {
 
     // Remove
     conversations['MAIN'] = {
+      id: 'MAIN',
       title: 'TestChat',
-      name: 'name',
       type: 'channel_pub',
       users: ['Gino', 'Palle'],
       messages: [
-        { id: '1', sender: 'shurizzle', message: 'Go' },
-        { id: '2', sender: 'shurizzle', message: 'Fa' },
-        { id: '3', sender: 'shurizzle', message: 'Cagare' },
+        { id: '1', sender: 'shurizzle', content: 'Go' },
+        { id: '2', sender: 'shurizzle', content: 'Fa' },
+        { id: '3', sender: 'shurizzle', content: 'Cagare' },
       ],
     };
 
     // Remove
     conversations['2'] = {
+      id: '2',
       title: 'Test2',
-      name: 'name',
       type: 'channel_pub',
       users: ['Gino', 'Palle'],
       messages: [
-        { id: '1', sender: 'OU', message: 'ssss' },
-        { id: '2', sender: 'O9OOOOOO', message: 'ffff' },
-        { id: '3', sender: 'WWWWWWW', message: 'eeeeeeë' },
+        { id: '1', sender: 'OU', content: 'ssss' },
+        { id: '2', sender: 'O9OOOOOO', content: 'ffff' },
+        { id: '3', sender: 'WWWWWWW', content: 'eeeeeeë' },
       ],
     };
 
@@ -45,7 +45,7 @@ export class ChatService {
 
       this.sendMessage({
         type: 'channel_message',
-        message: 'here i am bitches',
+        content: 'here i am bitches',
       });
     };
 
@@ -56,7 +56,7 @@ export class ChatService {
 
     this.websocket.onmessage = event => {
       const data = JSON.parse(event.data);
-      this.handleMessage(data);
+      this.handleReceivedMessage(data);
       console.log(this.conversations['MAIN']);
     };
   }
@@ -67,33 +67,33 @@ export class ChatService {
       this.websocket = null;
     }
   }
-
-  sendMessage(message) {
+  // ! CHANGE, Receivers should be an array, not put inside an array
+  sendMessage(receivers, content) {
     if (this.websocket && this.websocket.readyState == WebSocket.OPEN) {
       const payload = {
-        // ! CHANGE
         id: String(Math.floor(Math.random() * 1000000)),
         type: 'channel_message',
         sender: 'test',
-        receiver: 'MAIN',
-        message: message,
+        // ! CHANGE
+        receivers: [receivers],
+        content: content,
       };
 
       this.websocket.send(JSON.stringify(payload));
-      console.log(`Sent message: ${JSON.stringify(message)}`);
+      console.log(`Sent content: ${JSON.stringify(content)}`);
     }
   }
 
-  handleMessage(message) {
-    switch (message.type) {
+  handleReceivedMessage(content) {
+    switch (content.type) {
       case 'channel_message':
-        this.conversations['MAIN'].messages.push(message);
+        this.conversations[content.receivers].messages.push(content);
         console.log('we received a connection event');
-        console.log(message);
+        console.log(content);
         break;
       default:
-        console.log(`Received unknown type: ${message.type}`);
+        console.log(`Received unknown type: ${content.type}`);
     }
-    console.log(`Got message: ${JSON.stringify(message)}`);
+    console.log(`Got content: ${JSON.stringify(content)}`);
   }
 }
