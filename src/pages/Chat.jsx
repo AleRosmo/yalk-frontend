@@ -1,10 +1,18 @@
-import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
-
 import { ChatIcon } from '@chakra-ui/icons';
-import { Flex, Heading, Icon, Spacer, Textarea } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Heading,
+  Icon,
+  Spacer,
+  Textarea,
+  useToast,
+} from '@chakra-ui/react';
+import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { useOutletContext, useParams } from 'react-router-dom';
 import { MessageRow } from '../components/MessageRow/MessageRow';
 
+// ! LOADER FUNCTION!!!
 export default function Chat() {
   const context = useOutletContext();
   const params = useParams();
@@ -13,36 +21,45 @@ export default function Chat() {
     [params.id]
   );
 
+  const toast = useToast();
+
   const [messageHistory, setMessageHistory] = useState(null);
   const [messageTextValue, setMessageTextValue] = useState();
 
   // TODO: Custom hook?
-  const handleKeyPress = e => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      context.sendMessage(e.target.value);
+  const handleKeyPress = event => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      context.sendMessage(currentChat.id, event.target.value);
       setMessageTextValue('');
     }
   };
 
+  const messageListener = useCallback(event => {
+    const message = JSON.parse(event.data);
+    toast({
+      title: 'Debug: Message received',
+      description: message.content,
+      status: 'info',
+      duration: 5000,
+    });
+    if (
+      message.type === 'channel_message' &&
+      message.receivers.includes(currentChat.id)
+    ) {
+      setMessageHistory(prevMessages => [
+        ...prevMessages,
+        <MessageRow
+          key={message.id}
+          sender={message.sender}
+          content={message.content}
+        />,
+      ]);
+    }
+  });
+
   useLayoutEffect(() => {
     setMessageHistory(() => makeChatRows(currentChat));
-
-    const messageListener = event => {
-      const message = JSON.parse(event.data);
-      if (message.receiver === currentChat.id) {
-        // console.log('SAME ID');
-        setMessageHistory(prevMessages => [
-          ...prevMessages,
-          <MessageRow
-            key={message.id}
-            sender={message.sender}
-            message={message.message}
-          />,
-        ]);
-      }
-    };
-
     context.websocket.addEventListener('message', messageListener);
 
     return () => {
@@ -52,34 +69,43 @@ export default function Chat() {
   }, [params.id, context.conversations[params.id]]);
 
   return (
-    // chat ? (
     <Flex h="full" flexDir={'column'}>
-      <Flex
-        bg={'teal'}
-        w={'full'}
-        px="10px"
-        borderTopRadius={'15px'}
-        align={'center'}
-        gap={'8px'}
-      >
-        <ChatIcon boxSize="28px" />
-        <Heading color={'gray.800'}>{currentChat.title}</Heading>
-      </Flex>
+      <ChatHeader title={currentChat.title} />
       {messageHistory}
       <Spacer />
+      <Box margin={"10px"}>
       <Textarea
-        borderColor={'gray.800'}
-        color={'gray.800'}
-        background={'teal'}
-        variant={'outlined'}
+        // borderColor={'gray.400'}
+        
+        color={'teal.300'}
+        background={'gray.800'}
+        // variant={'outlined'}
         resize={'none'}
         onChange={e => setMessageTextValue(e.target.value)}
         value={messageTextValue}
         onKeyDown={handleKeyPress}
+        placeholder={"Uhm.."}
+        _placeholder={{color: "teal.700"}}
       />
+      </Box>
     </Flex>
   );
-  // ) : null;
+}
+
+function ChatHeader({ title }) {
+  return (
+    <Flex
+      bg={'teal'}
+      w={'full'}
+      px="10px"
+      borderTopRadius={'15px'}
+      align={'center'}
+      gap={'8px'}
+    >
+      <ChatIcon boxSize="28px" />
+      <Heading color={'gray.800'}>{title}</Heading>
+    </Flex>
+  );
 }
 
 function makeChatRows(chat) {
@@ -87,7 +113,7 @@ function makeChatRows(chat) {
     <MessageRow
       key={message.id}
       sender={message.sender}
-      message={message.message}
+      content={message.content}
     />
   ));
 }
