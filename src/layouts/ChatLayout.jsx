@@ -61,8 +61,6 @@ export const ChatLayoutLoader = ({ params }) => {};
 
 // ! ALL BELOW THIS LINE WILL BE REMOVED
 export const SidebarLoader = async ({ params }) => {
-  const { id } = params;
-
   const profile = await getProfile();
 
   const chats = await getChats(profile.joinedChats);
