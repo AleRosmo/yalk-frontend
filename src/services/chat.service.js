@@ -91,6 +91,10 @@ export class ChatService {
         console.log('we received a connection event');
         console.log(content);
         break;
+      case 'user_login':
+        this.profile = content.data;
+        console.log(`Got content: ${this.profile}`);
+
       default:
         console.log(`Received unknown type: ${content.type}`);
     }

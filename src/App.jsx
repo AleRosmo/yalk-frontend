@@ -6,8 +6,8 @@ import ChatProvider, { ChatContext, useChat } from './context/ChatContext';
 import ChatLayout, { SidebarLoader } from './layouts/ChatLayout';
 import Chat from './pages/Chat';
 import Home from './pages/Home';
+import Login from './pages/Login';
 import { ChatService } from './services/chat.service';
-
 const router = createBrowserRouter([
   {
     path: '/',
@@ -25,6 +25,10 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: '/login',
+    element: <Login />,
+  }
 ]);
 
 function App() {

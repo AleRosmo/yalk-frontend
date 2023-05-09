@@ -25,7 +25,7 @@ export default function Sidebar({ profile, chats }) {
       </Accordion>
       <Spacer />
       {/* ! CHANGE THIS!! */}
-      <ProfileRow avatarUrl={"/bobpp.png"} sender={profile.sender}/>
+      <ProfileRow profile={profile} />
     </SidebarContainer>
   );
 }

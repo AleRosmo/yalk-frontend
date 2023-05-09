@@ -25,7 +25,7 @@ import ChatProvider, { ChatContext, useChat } from '../context/ChatContext';
 // };
 
 export default function ChatLayout() {
-  const { profile, chats } = useLoaderData();
+  const { chats } = useLoaderData();
   const chatService = useChat();
 
   return (
@@ -38,7 +38,7 @@ export default function ChatLayout() {
       color={'gray.800'}
     >
       <LayoutGroup>
-        <Sidebar profile={profile} chats={chats} />
+        <Sidebar profile={chatService.profile} chats={chats} />
         <Flex
           as={motion.div}
           mr={'10px'}
