@@ -39,7 +39,7 @@ export default function Login() {
           <Text fontSize={'lg'}>
             {'palle '}
             <Link color={'teal.400'}>{'floscissime'}</Link>
-            {' ✌️'}
+            {' ✌️ ma davvero tanto raga un botto devo spaziare'}
           </Text>
         </Stack>
         <Box rounded={'lg'} bg={'gray.700'} boxShadow={'lg'} p={8}>
