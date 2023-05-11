@@ -44,7 +44,7 @@ export class ChatService {
       console.log(event.target);
 
       this.sendMessage({
-        type: 'channel_message',
+        type: 'chat_message',
         content: 'here i am bitches',
       });
     };
@@ -72,7 +72,7 @@ export class ChatService {
     if (this.websocket && this.websocket.readyState == WebSocket.OPEN) {
       const payload = {
         id: String(Math.floor(Math.random() * 1000000)),
-        type: 'channel_message',
+        type: 'chat_message',
         sender: 'test',
         // ! CHANGE
         receivers: [receivers],
@@ -86,7 +86,7 @@ export class ChatService {
 
   handleReceivedMessage(content) {
     switch (content.type) {
-      case 'channel_message':
+      case 'chat_message':
         this.conversations[content.receivers].messages.push(content);
         console.log('we received a connection event');
         console.log(content);

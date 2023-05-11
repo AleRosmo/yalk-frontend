@@ -1,12 +1,12 @@
 import { ChatIcon } from '@chakra-ui/icons';
 import {
-  Box,
-  Flex,
-  Heading,
-  Icon,
-  Spacer,
-  Textarea,
-  useToast,
+    Box,
+    Flex,
+    Heading,
+    Icon,
+    Spacer,
+    Textarea,
+    useToast,
 } from '@chakra-ui/react';
 import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { useOutletContext, useParams } from 'react-router-dom';
@@ -44,7 +44,7 @@ export default function Chat() {
       duration: 5000,
     });
     if (
-      message.type === 'channel_message' &&
+      message.type === 'chat_message' &&
       message.receivers.includes(currentChat.id)
     ) {
       setMessageHistory(prevMessages => [
