@@ -1,7 +1,7 @@
 {
   "chat": [
     {
-      "id": "MAIN",
+      "id": "1",
       "type": "channel_pub",
       "name": "Main",
       "messages": [
@@ -32,6 +32,6 @@
   ],
 
   "profile": [
-    { "id": "self", "sender": "Boh", "joinedChats": ["MAIN", 2, 3] }
+    { "id": "self", "sender": "Boh", "joinedChats": [1, 2, 3] }
   ]
 }

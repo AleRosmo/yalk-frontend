@@ -7,7 +7,7 @@ import ChatLayout, { SidebarLoader } from './layouts/ChatLayout';
 import Chat from './pages/Chat';
 import Home from './pages/Home';
 import Login from './pages/Login';
-import { ChatService } from './services/chat.service';
+import { ChatService } from './services/Chat/service';
 const router = createBrowserRouter([
   {
     path: '/',

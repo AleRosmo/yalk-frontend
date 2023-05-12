@@ -1,42 +1,54 @@
 import { ChatIcon } from '@chakra-ui/icons';
 import {
-    Box,
-    Flex,
-    Heading,
-    Icon,
-    Spacer,
-    Textarea,
-    useToast,
+  Box,
+  Flex,
+  Heading,
+  Icon,
+  Spacer,
+  Textarea,
+  useToast,
 } from '@chakra-ui/react';
 import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { useOutletContext, useParams } from 'react-router-dom';
 import { MessageRow } from '../components/MessageRow/MessageRow';
+import { Message } from '../services/Chat/messages';
 
 // ! LOADER FUNCTION!!!
 export default function Chat() {
   const context = useOutletContext();
   const params = useParams();
-  const currentChat = useMemo(
-    () => context.conversations[params.id],
-    [params.id]
-  );
-
   const toast = useToast();
 
   const [messageHistory, setMessageHistory] = useState(null);
   const [messageTextValue, setMessageTextValue] = useState();
 
+  const currentChat = useMemo(
+    () => context.conversations[params.id],
+    [params.id]
+  );
+
   // TODO: Custom hook?
   const handleKeyPress = event => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      context.sendMessage(currentChat.id, messageTextValue);
+
+      const message = new Message();
+      const timestamp = new Date();
+      message.new({
+        chatId: currentChat.id,
+        messageType: 'chat_message',
+        timestamp: timestamp.toISOString(),
+        content: messageTextValue,
+      });
+
+      context.sendMessage(message);
       setMessageTextValue('');
     }
   };
 
   const messageListener = useCallback(event => {
-    const message = JSON.parse(event.data);
+    const message = new Message();
+    // const message = JSON.parse(event.data);
     toast({
       title: 'Debug: Message received',
       description: message.content,

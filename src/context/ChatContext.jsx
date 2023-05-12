@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import { ChatService } from '../services/chat.service';
+import { ChatService } from '../services/Chat/service';
 // State should be contained here for the values concerning the context.
 
 // Context should be split into different context with single specific functions

@@ -3,8 +3,8 @@ export class ChatService {
     let conversations = new Map();
 
     // Remove
-    conversations['MAIN'] = {
-      id: 'MAIN',
+    conversations[1] = {
+      id: 1,
       title: 'TestChat',
       type: 'channel_pub',
       users: ['Gino', 'Palle'],
@@ -16,8 +16,8 @@ export class ChatService {
     };
 
     // Remove
-    conversations['2'] = {
-      id: '2',
+    conversations[2] = {
+      id: 2,
       title: 'Test2',
       type: 'channel_pub',
       users: ['Gino', 'Palle'],
@@ -30,6 +30,7 @@ export class ChatService {
 
     this.url = null;
     this.websocket = null;
+    this.token = null;
     this.conversations = conversations;
     this.users = {};
     this.profile = {};
@@ -43,10 +44,10 @@ export class ChatService {
       console.log('websocket opened connection succesfully');
       console.log(event.target);
 
-      this.sendMessage({
-        type: 'chat_message',
-        content: 'here i am bitches',
-      });
+      // this.sendMessage({
+      //   type: 'chat_message',
+      //   content: 'here i am bitches',
+      // });
     };
 
     this.websocket.onclose = eventMessage => {
@@ -57,7 +58,6 @@ export class ChatService {
     this.websocket.onmessage = event => {
       const data = JSON.parse(event.data);
       this.handleReceivedMessage(data);
-      console.log(this.conversations['MAIN']);
     };
   }
 
@@ -67,20 +67,17 @@ export class ChatService {
       this.websocket = null;
     }
   }
-  // ! CHANGE, Receivers should be an array, not put inside an array
-  sendMessage(receivers, content) {
-    if (this.websocket && this.websocket.readyState == WebSocket.OPEN) {
-      const payload = {
-        id: String(Math.floor(Math.random() * 1000000)),
-        type: 'chat_message',
-        sender: 'test',
-        // ! CHANGE
-        receivers: [receivers],
-        content: content,
-      };
 
-      this.websocket.send(JSON.stringify(payload));
-      console.log(`Sent content: ${JSON.stringify(content)}`);
+  sendMessage(payload) {
+    if (this.websocket && this.websocket.readyState == WebSocket.OPEN) {
+      this.websocket.send(
+        JSON.stringify({
+          type: 'chat_message',
+          token: this.getToken(),
+          data: payload, // ?
+        })
+      );
+      console.log(`Sent content: ${payload}`);
     }
   }
 
@@ -99,5 +96,20 @@ export class ChatService {
         console.log(`Received unknown type: ${content.type}`);
     }
     console.log(`Got content: ${JSON.stringify(content)}`);
+  }
+
+  getToken() {
+    const tokenName = 'YWS';
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.startsWith(tokenName + '=')) {
+        return cookie.substring(tokenName.length + 1);
+      }
+    }
+    return null;
+  }
+  saveToken(token) {
+    document.cookie = token;
   }
 }
