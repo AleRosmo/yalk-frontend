@@ -1,23 +1,18 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-// `@chakra-ui/theme` is a part of the base install with `@chakra-ui/react`
-
-import { useEffect, useRef } from 'react';
-import ChatProvider, { ChatContext, useChat } from './context/ChatContext';
-import ChatLayout, { SidebarLoader } from './layouts/ChatLayout';
+import ChatProvider from './context/ChatContext';
+import ChatLayout from './layouts/ChatLayout';
 import Chat from './pages/Chat';
 import Home from './pages/Home';
 import Login from './pages/Login';
-import { ChatService } from './services/Chat/service';
+
 const router = createBrowserRouter([
   {
     path: '/',
     element: <ChatLayout />,
-    loader: SidebarLoader,
     children: [
       {
         index: true,
         element: <Home />,
-        loader: null,
       },
       {
         path: '/chat/:id',
@@ -28,19 +23,12 @@ const router = createBrowserRouter([
   {
     path: '/login',
     element: <Login />,
-  }
+  },
 ]);
 
 function App() {
-  const chatService = useRef(new ChatService())
-  
-  useEffect(() => {
-    chatService.current.connect('ws://localhost:8080/ws');
-    return () => chatService.current.disconnect();
-  }, []);
-
   return (
-    <ChatProvider context={chatService.current}>
+    <ChatProvider url={'ws://localhost:8080/ws'}>
       <RouterProvider router={router} />
     </ChatProvider>
   );

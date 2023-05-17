@@ -7,15 +7,9 @@ export class Message {
     this.timestamp;
     this.content;
   }
-  deserialize(jsonData) {
-    var message = JSON.parse(jsonData);
-    this.id = message.id;
-    this.userId = message.userId;
-    this.chatId = message.conversationId;
-    // this.messageType = message.messageType;
-    this.timestamp = message.timestamp;
-    this.content = null;
-  }
+  // deserialize(jsonData) {
+  //   return JSON.parse(jsonData);
+  // }
   serialize() {
     return JSON.stringify(this);
   }

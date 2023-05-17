@@ -1,15 +1,25 @@
-import { ChatIcon } from '@chakra-ui/icons';
 import {
   Box,
   Flex,
-  Heading,
-  Icon,
+  Skeleton,
   Spacer,
   Textarea,
+  scroll,
+  space,
   useToast,
 } from '@chakra-ui/react';
-import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
+
+import React, {
+  useCallback,
+  useDeferredValue,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useOutletContext, useParams } from 'react-router-dom';
+import { ChatHeader } from '../components/ChatHeader/ChatHeader';
 import { MessageRow } from '../components/MessageRow/MessageRow';
 import { Message } from '../services/Chat/messages';
 
@@ -18,14 +28,13 @@ export default function Chat() {
   const context = useOutletContext();
   const params = useParams();
   const toast = useToast();
-
+  const chatContainer = useRef(null);
   const [messageHistory, setMessageHistory] = useState(null);
   const [messageTextValue, setMessageTextValue] = useState();
 
-  const currentChat = useMemo(
-    () => context.conversations[params.id],
-    [params.id]
-  );
+  const currentChat = useMemo(() => {
+    return context.chats[parseInt(params.id)];
+  }, [params.id]);
 
   // TODO: Custom hook?
   const handleKeyPress = event => {
@@ -34,6 +43,7 @@ export default function Chat() {
 
       const message = new Message();
       const timestamp = new Date();
+
       message.new({
         chatId: currentChat.id,
         messageType: 'chat_message',
@@ -47,23 +57,27 @@ export default function Chat() {
   };
 
   const messageListener = useCallback(event => {
-    const message = new Message();
-    // const message = JSON.parse(event.data);
+    // const message = new Message();
+    const payload = JSON.parse(event.data);
+    if (payload.type !== 'chat_message') {
+      return;
+    }
+
+    const message = payload.data;
+
     toast({
       title: 'Debug: Message received',
       description: message.content,
       status: 'info',
       duration: 5000,
     });
-    if (
-      message.type === 'chat_message' &&
-      message.receivers.includes(currentChat.id)
-    ) {
+
+    if (message.chatId === currentChat.id) {
       setMessageHistory(prevMessages => [
         ...prevMessages,
         <MessageRow
           key={message.id}
-          sender={message.sender}
+          user={message.user}
           content={message.content}
         />,
       ]);
@@ -78,17 +92,24 @@ export default function Chat() {
       setMessageHistory(null);
       context.websocket.removeEventListener('message', messageListener);
     };
-  }, [params.id, context.conversations[params.id]]);
+  }, [params.id]);
+
+  useDeferredValue(() => {
+    console.log('here');
+  });
 
   return (
-    <Flex h="full" flexDir={'column'}>
-      <ChatHeader title={currentChat.title} />
-      {messageHistory}
-      <Spacer />
+    <>
+      <Skeleton isLoaded={currentChat}>
+        <ChatHeader title={'Test'} />
+      </Skeleton>
+      <Flex h="full" flexDir={'column'} overflow={'scroll'} ref={chatContainer}>
+        {messageHistory}
+        <Spacer />
+      </Flex>
       <Box margin={'10px'}>
         <Textarea
           // borderColor={'gray.400'}
-
           color={'teal.300'}
           background={'gray.800'}
           // variant={'outlined'}
@@ -100,23 +121,7 @@ export default function Chat() {
           _placeholder={{ color: 'teal.700' }}
         />
       </Box>
-    </Flex>
-  );
-}
-
-function ChatHeader({ title }) {
-  return (
-    <Flex
-      bg={'teal'}
-      w={'full'}
-      px="10px"
-      borderTopRadius={'15px'}
-      align={'center'}
-      gap={'8px'}
-    >
-      <ChatIcon boxSize="28px" />
-      <Heading color={'gray.800'}>{title}</Heading>
-    </Flex>
+    </>
   );
 }
 
@@ -124,7 +129,7 @@ function makeChatRows(chat) {
   return chat.messages.map(message => (
     <MessageRow
       key={message.id}
-      sender={message.sender}
+      user={message.user}
       content={message.content}
     />
   ));

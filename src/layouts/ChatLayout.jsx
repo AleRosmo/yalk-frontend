@@ -1,32 +1,29 @@
-import { Flex } from '@chakra-ui/react';
+import { Flex, Spinner } from '@chakra-ui/react';
 import { LayoutGroup, motion } from 'framer-motion';
-import { useContext, useEffect, useState } from 'react';
-import { Outlet, useLoaderData, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Outlet } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
-import ChatProvider, { ChatContext, useChat } from '../context/ChatContext';
-// const Profile = {
-//   Id,
-//   Username,
-//   DisplayedName,
-//   AvatarUrl,
-//   LastOffline,
-//   LastOnline,
-//   IsAdmin,
-// };
-
-// const Chat = {
-//   Id,
-//   Type,
-//   Name,
-//   Created,
-//   Members,
-//   IsPublic, // ? Possibly merge with "type"
-//   Messages,
-// };
+import { useChat } from '../context/ChatContext';
 
 export default function ChatLayout() {
-  const { chats } = useLoaderData();
   const chatService = useChat();
+
+  const [user, setUser] = useState(null);
+  const [chats, setChats] = useState([]);
+
+  useEffect(() => {
+    if (chatService.websocket !== null) {
+      chatService.websocket.addEventListener('message', handleMessage);
+      setUser(chatService.user);
+    }
+    return () => {
+      chatService.websocket.removeEventListener('message', handleMessage);
+    };
+  }, [chatService]);
+
+  if (!user) {
+    return <Spinner />;
+  }
 
   return (
     <Flex
@@ -38,7 +35,7 @@ export default function ChatLayout() {
       color={'gray.800'}
     >
       <LayoutGroup>
-        <Sidebar profile={chatService.profile} chats={chats} />
+        <Sidebar user={user} />
         <Flex
           as={motion.div}
           mr={'10px'}
@@ -55,38 +52,12 @@ export default function ChatLayout() {
       </LayoutGroup>
     </Flex>
   );
-}
 
-export const ChatLayoutLoader = ({ params }) => {};
-
-// ! ALL BELOW THIS LINE WILL BE REMOVED
-export const SidebarLoader = async ({ params }) => {
-  const profile = await getProfile();
-
-  const chats = await getChats(profile.joinedChats);
-
-  return { profile, chats };
-};
-
-async function getChats(joinedChats) {
-  const chats = Promise.all(
-    joinedChats.map(async chatId => {
-      const response = await fetch(`http://localhost:4000/chat/${chatId}`);
-      if (!response.ok) {
-        throw Error('Could not find chat id');
-      }
-      return response.json();
-    })
-  );
-  return await chats;
-}
-
-async function getProfile() {
-  const response = await fetch(`http://localhost:4000/profile/self`);
-
-  if (!response.ok) {
-    throw Error('Could not get profile');
+  function handleMessage(event) {
+    const payload = JSON.parse(event.data);
+    const data = payload.data;
+    if (payload.type === 'initial') {
+      setUser(data.user);
+    }
   }
-
-  return await response.json();
 }

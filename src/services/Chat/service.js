@@ -1,40 +1,13 @@
 export class ChatService {
   constructor() {
-    let conversations = new Map();
-
-    // Remove
-    conversations[1] = {
-      id: 1,
-      title: 'TestChat',
-      type: 'channel_pub',
-      users: ['Gino', 'Palle'],
-      messages: [
-        { id: '1', sender: 'shurizzle', content: 'Go' },
-        { id: '2', sender: 'shurizzle', content: 'Fa' },
-        { id: '3', sender: 'shurizzle', content: 'Cagare' },
-      ],
-    };
-
-    // Remove
-    conversations[2] = {
-      id: 2,
-      title: 'Test2',
-      type: 'channel_pub',
-      users: ['Gino', 'Palle'],
-      messages: [
-        { id: '1', sender: 'OU', content: 'ssss' },
-        { id: '2', sender: 'O9OOOOOO', content: 'ffff' },
-        { id: '3', sender: 'WWWWWWW', content: 'eeeeeeë' },
-      ],
-    };
-
+    const chats = new Map();
     this.url = null;
     this.websocket = null;
     this.token = null;
-    this.conversations = conversations;
-    this.users = {};
-    this.profile = {};
-    this.settings = {};
+    this.chats = chats;
+    this.users = null;
+    this.user = null;
+    this.settings = null;
   }
   connect(url) {
     this.url = url;
@@ -43,11 +16,6 @@ export class ChatService {
     this.websocket.onopen = event => {
       console.log('websocket opened connection succesfully');
       console.log(event.target);
-
-      // this.sendMessage({
-      //   type: 'chat_message',
-      //   content: 'here i am bitches',
-      // });
     };
 
     this.websocket.onclose = eventMessage => {
@@ -81,21 +49,22 @@ export class ChatService {
     }
   }
 
-  handleReceivedMessage(content) {
-    switch (content.type) {
+  handleReceivedMessage(payload) {
+    const data = payload.data;
+
+    switch (payload.type) {
       case 'chat_message':
-        this.conversations[content.receivers].messages.push(content);
-        console.log('we received a connection event');
-        console.log(content);
+        this.chats[data.chatId].messages.push(data);
+        console.log(`received a connection event ${payload}`);
         break;
-      case 'user_login':
-        this.profile = content.data;
-        console.log(`Got content: ${this.profile}`);
+
+      case 'initial':
+        this.initialize(data);
+        break;
 
       default:
-        console.log(`Received unknown type: ${content.type}`);
+        console.log(`Received unknown type: ${payload.type}`);
     }
-    console.log(`Got content: ${JSON.stringify(content)}`);
   }
 
   getToken() {
@@ -109,7 +78,17 @@ export class ChatService {
     }
     return null;
   }
+
   saveToken(token) {
     document.cookie = token;
+  }
+
+  initialize(initialData) {
+    console.log('initializing');
+    this.user = initialData.user;
+    initialData.chats.forEach(chat => {
+      this.chats[chat.id] = chat;
+    });
+    console.log(initialData);
   }
 }

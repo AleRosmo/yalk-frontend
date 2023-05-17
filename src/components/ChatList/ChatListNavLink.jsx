@@ -7,8 +7,9 @@ export const ChatListNavLink = ({ chat }) => (
     {({ isActive, isPending }) => (
       <ChatListButton
         key={chat.id}
+        id={chat.id}
         name={chat.name}
-        type={chat.type}
+        type={chat.chatType.type}
         isActive={isActive}
       />
     )}

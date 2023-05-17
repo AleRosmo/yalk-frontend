@@ -1,15 +1,7 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+
+import { Spinner } from '@chakra-ui/react';
 import { ChatService } from '../services/Chat/service';
-// State should be contained here for the values concerning the context.
-
-// Context should be split into different context with single specific functions
-
-// We can use custom hooks returning useContext, so that we can return
-// specific values and setters/handlers for the individual context.
-
-// Also should be split in multiple files for individual contexts like:
-// ThemeContext, which will export custom hooks with value of theme and handler function
-// that sets the theme, along with returning a component wrapper for the context provider.
 
 export const ChatContext = createContext();
 
@@ -17,9 +9,32 @@ export function useChat() {
   return useContext(ChatContext);
 }
 
-export default function ChatProvider({ context, children }) {
-  // const [chatService] = useState(context);
+export default function ChatProvider({ url, children }) {
+  const [isLoading, setIsloading] = useState(true);
+  const [chatService, setChatService] = useState();
+
+  useEffect(() => {
+    const chatService = new ChatService();
+    chatService.connect(url);
+    chatService.websocket.addEventListener('open', () => {
+      setChatService(chatService);
+    });
+
+    chatService.websocket.addEventListener('message', () => {
+      console.log("received message in ChatContext")
+      setIsloading(false);
+    });
+
+    return () => {
+      chatService.disconnect();
+      setChatService(null);
+    };
+  }, [url]);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
   return (
-    <ChatContext.Provider value={context}>{children}</ChatContext.Provider>
+    <ChatContext.Provider value={chatService}>{children}</ChatContext.Provider>
   );
 }
