@@ -79,6 +79,7 @@ export default function Chat() {
           key={message.id}
           user={message.user}
           content={message.content}
+          isLastMessage={true}
         />,
       ]);
     }
@@ -94,9 +95,9 @@ export default function Chat() {
     };
   }, [params.id]);
 
-  useDeferredValue(() => {
-    console.log('here');
-  });
+  // useDeferredValue(() => {
+  //   console.log('here');
+  // });
 
   return (
     <>
@@ -126,11 +127,12 @@ export default function Chat() {
 }
 
 function makeChatRows(chat) {
-  return chat.messages.map(message => (
+  return chat.messages.map((message, index) => (
     <MessageRow
       key={message.id}
       user={message.user}
       content={message.content}
+      isLastMessage={index === chat.messages.length - 1}
     />
   ));
 }

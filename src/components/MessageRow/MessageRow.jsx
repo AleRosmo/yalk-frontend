@@ -1,9 +1,22 @@
 import { Flex, Heading, Text, VStack } from '@chakra-ui/react';
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import AvatarHover from '../AvatarHover/AvatarHover';
 
-export const MessageRow = ({ user, content }) => {
+export const MessageRow = ({ user, content, isLastMessage }) => {
+
+
+
+
+  const lastMessageRef = useRef(null);
+  useEffect(() => {
+    if (isLastMessage && lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [isLastMessage]);
+
+
+  
   return (
     // TODO: Cards instead of flex
     <Flex
@@ -12,8 +25,9 @@ export const MessageRow = ({ user, content }) => {
       p={'10px'}
       _hover={{ backgroundColor: 'teal.700', color: 'gray.400' }}
       color={'teal'}
+      ref={isLastMessage ? lastMessageRef : null}
     >
-      <AvatarHover />
+      <AvatarHover src={user.avatarUrl}/>
       <VStack align={'left'}>
         <Heading fontSize={'20px'} fontWeight={'bold'}>
           {user.displayName}
