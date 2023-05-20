@@ -1,6 +1,7 @@
 // This component must
 import { Flex, IconButton, Text } from '@chakra-ui/react';
 import { BiLogOut } from 'react-icons/bi';
+import AuthService from '../../services/auth.service';
 import AvatarHover from '../AvatarHover/AvatarHover';
 function ProfileRow({ profile }) {
   return (
@@ -16,7 +17,14 @@ function ProfileRow({ profile }) {
         <>
           <AvatarHover src={profile.avatarUrl} />
           <Text color="white">{profile.displayName}</Text>
-          <IconButton variant="ghost" icon={<BiLogOut size="20" />} />
+          <IconButton
+            variant="ghost"
+            icon={<BiLogOut size="20" />}
+            // onClick={async () => {
+            //   await AuthService.logout();
+            //   window.location.replace('/login');
+            // }}
+          />
         </>
       ) : null}
     </Flex>
