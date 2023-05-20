@@ -70,6 +70,7 @@ export default function Chat() {
       description: message.content,
       status: 'info',
       duration: 5000,
+      position: 'bottom-right',
     });
 
     if (message.chatId === currentChat.id) {
