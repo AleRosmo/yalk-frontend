@@ -41,7 +41,7 @@ export class ChatService {
       this.websocket.send(
         JSON.stringify({
           type: 'chat_message',
-          token: this.getToken(),
+          // token: this.getToken(),
           data: payload, // ?
         })
       );
@@ -67,17 +67,7 @@ export class ChatService {
     }
   }
 
-  getToken() {
-    const tokenName = 'YWS';
-    const cookies = document.cookie.split(';');
-    for (let i = 0; i < cookies.length; i++) {
-      const cookie = cookies[i].trim();
-      if (cookie.startsWith(tokenName + '=')) {
-        return cookie.substring(tokenName.length + 1);
-      }
-    }
-    return null;
-  }
+
 
   saveToken(token) {
     document.cookie = token;
