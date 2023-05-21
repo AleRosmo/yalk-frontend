@@ -32,31 +32,3 @@ export default function Sidebar({ user }) {
     </SidebarContainer>
   );
 }
-
-{
-  /* <VStack>
-        <Button
-          as={motion.button}
-          w={'full'}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          transition="0.25s linear"
-        >
-          Home
-        </Button>
-        <Button w={'full'}>Profile</Button>
-            <Button
-        as={motion.button}
-        variant="solid"
-        colorScheme="teal"
-        // drag="x"
-        // dragConstraints={{ left: -100, right: 100 }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        transition="0.25s linear"
-      >
-        Test Framer
-      </Button>
-      </VStack> 
-      */
-}
