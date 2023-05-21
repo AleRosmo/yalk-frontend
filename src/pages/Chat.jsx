@@ -4,15 +4,10 @@ import {
   Skeleton,
   Spacer,
   Textarea,
-  scroll,
-  space,
   useToast,
 } from '@chakra-ui/react';
-
 import React, {
   useCallback,
-  useDeferredValue,
-  useEffect,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -23,7 +18,6 @@ import { ChatHeader } from '../components/ChatHeader/ChatHeader';
 import { MessageRow } from '../components/MessageRow/MessageRow';
 import { Message } from '../services/Chat/messages';
 
-// ! LOADER FUNCTION!!!
 export default function Chat() {
   const context = useOutletContext();
   const params = useParams();
@@ -74,15 +68,28 @@ export default function Chat() {
     });
 
     if (message.chatId === currentChat.id) {
-      setMessageHistory(prevMessages => [
-        ...prevMessages,
-        <MessageRow
-          key={message.id}
-          user={message.user}
-          content={message.content}
-          isLastMessage={true}
-        />,
-      ]);
+      setMessageHistory(prevMessages => {
+        if (!prevMessages) {
+          return (
+            <MessageRow
+              key={message.id}
+              user={message.user}
+              content={message.content}
+              isLastMessage={true}
+            />
+          );
+        }
+
+        return [
+          ...prevMessages,
+          <MessageRow
+            key={message.id}
+            user={message.user}
+            content={message.content}
+            isLastMessage={true}
+          />,
+        ];
+      });
     }
   });
 
@@ -103,7 +110,7 @@ export default function Chat() {
   return (
     <>
       <Skeleton isLoaded={currentChat}>
-        <ChatHeader title={'Test'} />
+        <ChatHeader title={currentChat.name} />
       </Skeleton>
       <Flex h="full" flexDir={'column'} overflow={'scroll'} ref={chatContainer}>
         {messageHistory}
@@ -128,6 +135,9 @@ export default function Chat() {
 }
 
 function makeChatRows(chat) {
+  if (!chat.messages || chat.messages.length === 0) {
+    return null;
+  }
   return chat.messages.map((message, index) => (
     <MessageRow
       key={message.id}
