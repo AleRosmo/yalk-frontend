@@ -64,7 +64,6 @@ export const AppError = () => {
       return
     }
 
-    // return <div>Error lol</div>;
   }, []);
 };
 
