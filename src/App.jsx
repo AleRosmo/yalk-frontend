@@ -9,8 +9,8 @@ import {
 import ChatBrowser from './components/ChatBrowser/ChatBrowser';
 import ChatProvider from './context/ChatContext';
 import ChatLayout from './layouts/ChatLayout';
+import Admin from './pages/Admin';
 import Chat from './pages/Chat';
-import Home from './pages/Home';
 import Login from './pages/Login';
 import AuthService from './services/auth.service';
 
@@ -31,6 +31,7 @@ function App() {
           path: '/chat/:id',
           element: <Chat />,
         },
+        { path: '/admin', element: <Admin /> },
       ],
     },
     {
@@ -48,12 +49,14 @@ export const AppError = () => {
 
   useEffect(() => {
     if (error.status !== undefined && error.status === 404) {
-      return
+      return "Error 404";
     }
 
-    if (error.response.status && error.response.status === 401) {
+    if (error.response.status !== undefined && error.response.status === 401) {
       navigate('/login');
     }
+
+    return error;
   }, []);
 };
 

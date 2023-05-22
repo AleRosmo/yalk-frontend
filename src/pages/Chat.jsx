@@ -1,6 +1,8 @@
 import {
   Box,
+  Center,
   Flex,
+  Heading,
   Skeleton,
   Spacer,
   Textarea,
@@ -14,7 +16,7 @@ import React, {
   useState,
 } from 'react';
 import { useOutletContext, useParams } from 'react-router-dom';
-import { ChatHeader } from '../components/ChatHeader/ChatHeader';
+import { IconHeader } from '../components/IconHeader/IconHeader';
 import { MessageRow } from '../components/MessageRow/MessageRow';
 import { Message } from '../services/Chat/messages';
 
@@ -25,6 +27,11 @@ export default function Chat() {
   const chatContainer = useRef(null);
   const [messageHistory, setMessageHistory] = useState(null);
   const [messageTextValue, setMessageTextValue] = useState();
+
+  // const currentChat = useMemo(
+  //   context.chat.find(chat => chat.id === params.chatId),
+  //   [params.id]
+  // );
 
   const currentChat = useMemo(() => {
     return context.chats[parseInt(params.id)];
@@ -94,23 +101,21 @@ export default function Chat() {
   });
 
   useLayoutEffect(() => {
-    setMessageHistory(() => makeChatRows(currentChat));
-    context.websocket.addEventListener('message', messageListener);
+    if (currentChat) {
+      setMessageHistory(() => makeChatRows(currentChat));
+      context.websocket.addEventListener('message', messageListener);
 
-    return () => {
-      setMessageHistory(null);
-      context.websocket.removeEventListener('message', messageListener);
-    };
+      return () => {
+        setMessageHistory(null);
+        context.websocket.removeEventListener('message', messageListener);
+      };
+    }
   }, [params.id]);
 
-  // useDeferredValue(() => {
-  //   console.log('here');
-  // });
-
-  return (
+  return currentChat ? (
     <>
       <Skeleton isLoaded={currentChat}>
-        <ChatHeader title={currentChat.name} />
+        <IconHeader title={currentChat ? currentChat.name : 'No chats'} />
       </Skeleton>
       <Flex h="full" flexDir={'column'} overflow={'scroll'} ref={chatContainer}>
         {messageHistory}
@@ -131,6 +136,10 @@ export default function Chat() {
         />
       </Box>
     </>
+  ) : (
+    <Center>
+      <Heading color={'teal'}>{'No chats to display!'}</Heading>
+    </Center>
   );
 }
 

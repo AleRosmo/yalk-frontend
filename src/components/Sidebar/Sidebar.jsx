@@ -1,10 +1,19 @@
-import { Accordion, Button, Skeleton, Spacer, VStack } from '@chakra-ui/react';
+import {
+  Accordion,
+  Button,
+  IconButton,
+  Skeleton,
+  Spacer,
+  VStack,
+} from '@chakra-ui/react';
 import { useToggle } from '../../hooks/useToggle';
 import ChatList from '../ChatList';
 import ProfileRow from '../ProfileRow/ProfileRow';
 
+import { ViewIcon } from '@chakra-ui/icons';
 import React from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { NavLink, useOutletContext } from 'react-router-dom';
+import { AddButton } from '../ChatList/ChatList';
 import { SidebarContainer } from './SidebarContainer';
 import { SidebarToggleButton } from './SidebarToggleButton';
 
@@ -27,7 +36,9 @@ export default function Sidebar({ user }) {
         />
       </Accordion>
       <Spacer />
-      {/* ! CHANGE THIS!! */}
+      <Button w="full" alignSelf={"center"} colorScheme="teal" leftIcon={<ViewIcon />} variant={"outline"}>
+        <NavLink to={'/admin'}>Admin</NavLink>
+      </Button>
       <ProfileRow profile={user} />
     </SidebarContainer>
   );

@@ -9,7 +9,6 @@ export default function ChatLayout() {
   const chatService = useChat();
 
   const [user, setUser] = useState(null);
-  const [chats, setChats] = useState([]);
 
   useEffect(() => {
     if (chatService.websocket !== null) {

@@ -1,11 +1,8 @@
 import { ChatIcon } from '@chakra-ui/icons';
-import {
-  Flex,
-  Heading
-} from '@chakra-ui/react';
+import { Flex, Heading } from '@chakra-ui/react';
 import React from 'react';
 
-export function ChatHeader({ title }) {
+export function IconHeader({ title }) {
   return (
     <Flex
       bg={'teal'}

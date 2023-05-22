@@ -29,6 +29,15 @@ export class ChatService {
     };
   }
 
+  initialize(initialData) {
+    console.log('initializing');
+    this.user = initialData.user;
+    initialData.chats.forEach(chat => {
+      this.chats[chat.id] = chat;
+    });
+    console.log(initialData);
+  }
+
   disconnect() {
     if (this.websocket) {
       this.websocket.close(); // IGNORE WARNINGS IN DEV
@@ -41,11 +50,21 @@ export class ChatService {
       this.websocket.send(
         JSON.stringify({
           type: 'chat_message',
-          // token: this.getToken(),
           data: payload, // ?
         })
       );
-      console.log(`Sent content: ${payload}`);
+      console.log('Sent content' + payload);
+    }
+  }
+
+  AddAccount(account) {
+    if (this.websocket && this.websocket.readyState == WebSocket.OPEN) {
+      this.websocket.send(
+        JSON.stringify({
+          type: 'account_create',
+          data: account, // ?
+        })
+      );
     }
   }
 
@@ -65,20 +84,5 @@ export class ChatService {
       default:
         console.log(`Received unknown type: ${payload.type}`);
     }
-  }
-
-
-
-  saveToken(token) {
-    document.cookie = token;
-  }
-
-  initialize(initialData) {
-    console.log('initializing');
-    this.user = initialData.user;
-    initialData.chats.forEach(chat => {
-      this.chats[chat.id] = chat;
-    });
-    console.log(initialData);
   }
 }

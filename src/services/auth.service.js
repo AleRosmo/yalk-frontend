@@ -22,11 +22,10 @@ const logout = async () => {
   return response.data;
 };
 
-const validate = () => {
-  return axios.get(API_URL, {
+const validate = () =>
+  axios.get(API_URL + '/validate', {
     withCredentials: true,
   });
-};
 
 const getToken = () => {
   const tokenName = 'YWS';

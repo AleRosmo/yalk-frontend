@@ -13,12 +13,12 @@ import {
   color,
   useColorModeValue,
 } from '@chakra-ui/react';
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { default as AuthService } from '../services/auth.service';
 
 export default function Login() {
-  const [invalidSession, setInvalidSession] = useState();
+  const [invalidSession, setInvalidSession] = useState(null);
   const navigate = useNavigate();
 
   const LoginForm = () => {
@@ -26,7 +26,7 @@ export default function Login() {
     const [passwordInput, setPasswordInput] = useState('');
     const [rememberMe, setRememberMe] = useState();
 
-    useLayoutEffect(() => {
+    useEffect(() => {
       const token = AuthService.getToken();
       if (!token) {
         setInvalidSession(false);
@@ -42,10 +42,10 @@ export default function Login() {
             setInvalidSession(true);
           }
         });
-    });
+    }, []);
 
-    async function handleLogin() {
-      const redirectUrl = await AuthService.login(emailInput, passwordInput)
+    function handleLogin() {
+      AuthService.login(emailInput, passwordInput)
         .then(res => {
           if (res.status === 200) {
             navigate('/chat/1');
@@ -85,7 +85,7 @@ export default function Login() {
             align={'start'}
             justify={'space-between'}
           >
-            <Checkbox onChange={e => setRememberMe(e.target.value)}>
+            <Checkbox onChange={e => setRememberMe(e.target.checked)}>
               {'Remember me'}
             </Checkbox>
             <Link color={'teal.400'}>Forgot password?</Link>

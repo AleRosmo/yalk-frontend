@@ -21,7 +21,6 @@ export default function ChatProvider({ url, children }) {
     });
 
     chatService.websocket.addEventListener('message', () => {
-      console.log("received message in ChatContext")
       setIsloading(false);
     });
 
