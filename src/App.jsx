@@ -11,9 +11,9 @@ import ChatProvider from './context/ChatContext';
 import ChatLayout from './layouts/ChatLayout';
 import Admin from './pages/Admin';
 import Chat from './pages/Chat';
-import Login from './pages/Login';
-import AuthService from './services/auth.service';
+import Login, { LoginError } from './pages/Login';
 
+import AuthService from './services/auth.service';
 function App() {
   // ? State
   const router = createBrowserRouter([
@@ -37,6 +37,13 @@ function App() {
     {
       path: '/login',
       element: <Login />,
+      loader: async () => {
+        const res = await AuthService.validate();
+        if (res.status === 200) {
+          navigate('/chat/1');
+        }
+      },
+      errorElement: <LoginError />,
     },
   ]);
 
@@ -49,14 +56,15 @@ export const AppError = () => {
 
   useEffect(() => {
     if (error.status !== undefined && error.status === 404) {
-      return "Error 404";
+      return <Text>'Error 404'</Text>;
     }
 
     if (error.response.status !== undefined && error.response.status === 401) {
       navigate('/login');
+      return
     }
 
-    return error;
+    // return <div>Error lol</div>;
   }, []);
 };
 

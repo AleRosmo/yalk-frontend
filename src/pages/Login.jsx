@@ -17,8 +17,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { default as AuthService } from '../services/auth.service';
 
-export default function Login() {
-  const [invalidSession, setInvalidSession] = useState(null);
+export default function Login({ error }) {
+  const [isError, setIsError] = useState(error);
   const navigate = useNavigate();
 
   const LoginForm = () => {
@@ -26,23 +26,23 @@ export default function Login() {
     const [passwordInput, setPasswordInput] = useState('');
     const [rememberMe, setRememberMe] = useState();
 
-    useEffect(() => {
-      const token = AuthService.getToken();
-      if (!token) {
-        setInvalidSession(false);
-      }
-      AuthService.validate()
-        .then(res => {
-          if (res.status === 200) {
-            navigate('/chat/1');
-          }
-        })
-        .catch(err => {
-          if (err.status === 401) {
-            setInvalidSession(true);
-          }
-        });
-    }, []);
+    // useEffect(() => {
+    //   const token = AuthService.getToken();
+    //   if (!token) {
+    //     setInvalidSession(false);
+    //   }
+    //   AuthService.validate()
+    //     .then(res => {
+    //       if (res.status === 200) {
+    //         navigate('/chat/1');
+    //       }
+    //     })
+    //     .catch(err => {
+    //       if (err.status === 401) {
+    //         setInvalidSession(true);
+    //       }
+    //     });
+    // }, []);
 
     function handleLogin() {
       AuthService.login(emailInput, passwordInput)
@@ -90,7 +90,7 @@ export default function Login() {
             </Checkbox>
             <Link color={'teal.400'}>Forgot password?</Link>
           </Stack>
-          {invalidSession ? <Text>Not logged in</Text> : null}
+          {isError ? <Text color={"red"}>Please log in first</Text> : null}
           <Button
             bg={'teal.400'}
             color={'white'}
@@ -135,3 +135,5 @@ const LoginHeader = () => (
     </Text>
   </Stack>
 );
+
+export const LoginError = () => <Login error={true}></Login>;
