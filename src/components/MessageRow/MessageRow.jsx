@@ -4,19 +4,14 @@ import React, { useEffect, useRef } from 'react';
 import AvatarHover from '../AvatarHover/AvatarHover';
 
 export const MessageRow = ({ user, content, isLastMessage }) => {
-
-
-
-
   const lastMessageRef = useRef(null);
+
   useEffect(() => {
     if (isLastMessage && lastMessageRef.current) {
       lastMessageRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [isLastMessage]);
 
-
-  
   return (
     // TODO: Cards instead of flex
     <Flex
@@ -27,7 +22,7 @@ export const MessageRow = ({ user, content, isLastMessage }) => {
       color={'teal'}
       ref={isLastMessage ? lastMessageRef : null}
     >
-      <AvatarHover src={user.avatarUrl}/>
+      <AvatarHover src={user.avatarUrl} />
       <VStack align={'left'}>
         <Heading fontSize={'20px'} fontWeight={'bold'}>
           {user.displayName}
