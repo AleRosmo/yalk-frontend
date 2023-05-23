@@ -3,15 +3,21 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Spinner } from '@chakra-ui/react';
 import { ChatService } from '../services/Chat/service';
 
-export const ChatContext = createContext();
+export const ChatServiceContext = createContext();
 
-export function useChat() {
-  return useContext(ChatContext);
+export function useChatService() {
+  return useContext(ChatServiceContext);
 }
 
 export default function ChatProvider({ url, children }) {
   const [isLoading, setIsloading] = useState(true);
-  const [chatService, setChatService] = useState();
+	const [chats, setChats] = useState(new Map());
+	const [accounts, setAccounts] = useState(new Map());
+	const [serverUsers, setServerUsers] = useState(new Map());
+	const [user, setUser] = useState(null);
+
+	const websocket = useRef(null);
+
 
   useEffect(() => {
     const chatService = new ChatService();
@@ -34,6 +40,6 @@ export default function ChatProvider({ url, children }) {
     return <Spinner />;
   }
   return (
-    <ChatContext.Provider value={chatService}>{children}</ChatContext.Provider>
+    <ChatServiceContext.Provider value={chatService}>{children}</ChatServiceContext.Provider>
   );
 }
