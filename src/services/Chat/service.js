@@ -1,11 +1,17 @@
+import Account from './Account';
+import { Message } from './messages';
 export class ChatService {
   constructor() {
     const chats = new Map();
+    const accounts = new Map();
+    const serverUsers = new Map();
+
     this.url = null;
     this.websocket = null;
     this.token = null;
     this.chats = chats;
-    this.users = null;
+    this.accounts = accounts;
+    this.users = serverUsers;
     this.user = null;
     this.settings = null;
   }
@@ -30,11 +36,20 @@ export class ChatService {
   }
 
   initialize(initialData) {
-    console.log('initializing');
     this.user = initialData.user;
+
+    initialData.accounts.forEach(account => {
+      this.accounts.set(account.ID, new Account(account));
+    });
+
+    initialData.users.forEach(user => {
+      this.users[user.id] = user;
+    });
+
     initialData.chats.forEach(chat => {
       this.chats[chat.id] = chat;
     });
+
     console.log(initialData);
   }
 
@@ -57,7 +72,16 @@ export class ChatService {
     }
   }
 
-  AddAccount(account) {
+  // TODO: make mostly all getters and setters instead of useEffect weird shit
+  getUsers() {
+    return this.users;
+  }
+
+  getAccounts() {
+    return this.accounts;
+  }
+
+  addAccount(account) {
     if (this.websocket && this.websocket.readyState == WebSocket.OPEN) {
       this.websocket.send(
         JSON.stringify({
@@ -73,7 +97,13 @@ export class ChatService {
 
     switch (payload.type) {
       case 'chat_message':
-        this.chats[data.chatId].messages.push(data);
+        // this.chats.get(data.chatId).messages.push(new Message(data));
+        this.chats.get(data.chatId).messages.push(data); // TODO: Remove this and use new ChatMessage()
+        console.log(`received a chat message ${payload}`);
+        break;
+
+      case 'account_create':
+        this.accounts.set(data.ID, new Account(data));
         console.log(`received a connection event ${payload}`);
         break;
 

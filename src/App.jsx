@@ -60,11 +60,13 @@ export const AppError = () => {
     }
 
     if (error.response.status !== undefined && error.response.status === 401) {
+      // AuthService.deleteCookie('YLK');
       navigate('/login');
-      return
+      return;
     }
-
+    return;
   }, []);
+  return 'We';
 };
 
 export default App;

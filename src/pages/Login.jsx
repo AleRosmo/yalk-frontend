@@ -52,7 +52,7 @@ export default function Login({ error }) {
           }
         })
         .catch(() => {
-          setInvalidSession(true);
+          setIsError(true);
         });
     }
 
@@ -90,7 +90,7 @@ export default function Login({ error }) {
             </Checkbox>
             <Link color={'teal.400'}>Forgot password?</Link>
           </Stack>
-          {isError ? <Text color={"red"}>Please log in first</Text> : null}
+          {isError ? <Text color={'red'}>Please log in first</Text> : null}
           <Button
             bg={'teal.400'}
             color={'white'}
