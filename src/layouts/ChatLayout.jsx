@@ -3,24 +3,21 @@ import { LayoutGroup, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
-import { useChat } from '../context/ChatContext';
+import { useChatService } from '../context/ChatContext';
 
 export default function ChatLayout() {
-  const chatService = useChat();
+  const {
+    user,
+    chats,
+    accounts,
+    serverUsers,
+    sendMessage,
+    addAccount,
+    isLoading,
+  } = useChatService();
 
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    if (chatService.websocket !== null) {
-      chatService.websocket.addEventListener('message', handleMessage);
-      setUser(chatService.user);
-    }
-    return () => {
-      chatService.websocket.removeEventListener('message', handleMessage);
-    };
-  }, [chatService]);
-
-  if (!user) {
+  // TODO: To ChatLayout, has nothing to do here
+  if (isLoading) {
     return <Spinner />;
   }
 
@@ -46,17 +43,18 @@ export default function ChatLayout() {
           borderRadius={'15px'}
           w={'full'}
         >
-          <Outlet context={chatService} />
+          {/* <Outlet context={chatService} /> */}
+          <Outlet />
         </Flex>
       </LayoutGroup>
     </Flex>
   );
 
-  function handleMessage(event) {
-    const payload = JSON.parse(event.data);
-    const data = payload.data;
-    if (payload.type === 'initial') {
-      setUser(data.user);
-    }
-  }
+  // function handleMessage(event) {
+  //   const payload = JSON.parse(event.data);
+  //   const data = payload.data;
+  //   if (payload.type === 'initial') {
+  //     setUser(data.user);
+  //   }
+  // }
 }
