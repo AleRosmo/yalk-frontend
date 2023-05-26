@@ -1,30 +1,31 @@
-import { Box, Center, Heading } from '@chakra-ui/react';
+import { Box, Center, Heading, Text } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import {
   RouterProvider,
   createBrowserRouter,
+  redirect,
   useNavigate,
   useRouteError,
 } from 'react-router-dom';
-import ChatBrowser from './components/ChatBrowser/ChatBrowser';
-import ChatProvider from './context/ChatContext';
+import { useAuthService } from './context/AuthServiceContext';
+import ChatServiceProvider from './context/ChatServiceContext';
 import ChatLayout from './layouts/ChatLayout';
 import Admin from './pages/Admin';
 import Chat from './pages/Chat';
-import Login, { LoginError } from './pages/Login';
+import Login from './pages/Login';
 
-import AuthService from './services/auth.service';
-function App() {
-  // ? State
+export default function App() {
+  const { websocketUrl, login, logout, validate } = useAuthService();
+
   const router = createBrowserRouter([
     {
       path: '/',
       element: (
-        <ChatProvider url={'ws://localhost:8080/ws'}>
+        <ChatServiceProvider url={'ws://localhost:8080/ws'}>
           <ChatLayout />
-        </ChatProvider>
+        </ChatServiceProvider>
       ),
-      loader: () => AuthService.validate(),
+      loader: () => validate(),
       errorElement: <AppError />,
       children: [
         {
@@ -37,13 +38,17 @@ function App() {
     {
       path: '/login',
       element: <Login />,
-      loader: async () => {
-        const res = await AuthService.validate();
-        if (res.status === 200) {
-          navigate('/chat/1');
-        }
-      },
-      errorElement: <LoginError />,
+      loader: () =>
+        validate()
+          .then(res => {
+            if (res.status === 200) {
+              return redirect('/chat/1');
+            }
+          })
+          .catch(err => {
+            console.log(err);
+            return err
+          }),
     },
   ]);
 
@@ -55,18 +60,18 @@ export const AppError = () => {
   const error = useRouteError();
 
   useEffect(() => {
-    if (error.status !== undefined && error.status === 404) {
+    // TODO: Just return responses as { status: 200, statusText: 'OK' } or { status: 401, statusText: 'Unauthorized' } from backend
+    if (typeof error === 'string') {
+      return <Text>{error.toString()}</Text>;
+    }
+    if (typeof error.status !== undefined && error.status === 404) {
       return <Text>'Error 404'</Text>;
     }
-
-    if (error.response.status !== undefined && error.response.status === 401) {
-      // AuthService.deleteCookie('YLK');
+    if (
+      typeof error.response.status !== undefined &&
+      error.response.status === 401
+    ) {
       navigate('/login');
-      return;
     }
-    return;
   }, []);
-  return 'We';
 };
-
-export default App;
