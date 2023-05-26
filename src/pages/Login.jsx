@@ -31,7 +31,7 @@ export default function Login() {
   const [isError, setIsError] = useState(() => getErrorMessage(loaderData));
   const [isLoading, setIsLoading] = useState(true); // For Full page loading
 
-  const { websocketUrl, login, logout, validate } = useAuthService();
+  const { login } = useAuthService();
 
   // Higher order function to handle input changes, it takes
   // 'setter' as an argument, which is the "setSomething" state
@@ -41,8 +41,6 @@ export default function Login() {
   function handleInputChange(setter) {
     return e => setter(e.target.value);
   }
-
-  console.log(loaderData);
 
   // Higher order function to to handler login, when called
   // attempts to login with the credentials provided in handleLogin()
@@ -60,10 +58,6 @@ export default function Login() {
         setIsLoading(false);
       });
   };
-
-  // if (isLoading) {
-  //   return <div>Loading...</div>; // Replace this with your loading component
-  // }
 
   return (
     <LoginForm
