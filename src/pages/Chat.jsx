@@ -8,38 +8,22 @@ import {
   Textarea,
   useToast,
 } from '@chakra-ui/react';
-import { useChatService } from '../context/ChatContext';
+import { useChatService } from '../context/ChatServiceContext';
 
-import React, {
-  useCallback,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
-import { useOutletContext, useParams } from 'react-router-dom';
+import React, { useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { IconHeader } from '../components/IconHeader/IconHeader';
 import { MessageRow } from '../components/MessageRow/MessageRow';
-// import { Message } from '../services/Chat/messages';
 
 export default function Chat() {
-  const context = useOutletContext();
   const params = useParams();
-  const toast = useToast();
   const chatContainer = useRef(null);
-  // const [messageHistory, setMessageHistory] = useState(null);
-  const [messageTextValue, setMessageTextValue] = useState();
-  const {
-    user,
-    chats,
-    accounts,
-    serverUsers,
-    sendMessage,
-    addAccount,
-    isLoading,
-  } = useChatService();
 
-  const chat = chats.get(parseInt(params.id));
+  const [messageTextValue, setMessageTextValue] = useState();
+  const { chats, serverUsers, sendMessage } = useChatService();
+  
+  const chatId = parseInt(params.id);
+  const chat = chats.find(c => c.id === chatId);
 
   // TODO: Custom hook?
   const handleKeyPress = event => {
@@ -50,15 +34,6 @@ export default function Chat() {
     }
   };
 
-  // if () {
-  //   return (
-  //     <Center>
-  //       <IconHeader title={'No chats'} />
-
-  //     </Center>
-  //   );
-  // }
-
   return (
     <>
       {/* TODO: Add invalid chat header error like above */}
@@ -67,7 +42,7 @@ export default function Chat() {
         {chat.messages.length === 0 ? (
           <MessageRow
             key={1}
-            user={serverUsers.get(1)}
+            user={serverUsers.find(u => u.userId === 0)}
             content={`It's quiet here! write something first!`}
             isLastMessage={true}
           />
