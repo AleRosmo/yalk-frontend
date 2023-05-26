@@ -3,7 +3,8 @@ import { LayoutGroup, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
-import { useChatService } from '../context/ChatContext';
+import { useAuthService } from '../context/AuthServiceContext';
+import { useChatService } from '../context/ChatServiceContext';
 
 export default function ChatLayout() {
   const {
@@ -15,6 +16,8 @@ export default function ChatLayout() {
     addAccount,
     isLoading,
   } = useChatService();
+
+  const {websocketUrl } = useAuthService;
 
   // TODO: To ChatLayout, has nothing to do here
   if (isLoading) {
@@ -43,18 +46,9 @@ export default function ChatLayout() {
           borderRadius={'15px'}
           w={'full'}
         >
-          {/* <Outlet context={chatService} /> */}
           <Outlet />
         </Flex>
       </LayoutGroup>
     </Flex>
   );
-
-  // function handleMessage(event) {
-  //   const payload = JSON.parse(event.data);
-  //   const data = payload.data;
-  //   if (payload.type === 'initial') {
-  //     setUser(data.user);
-  //   }
-  // }
 }
