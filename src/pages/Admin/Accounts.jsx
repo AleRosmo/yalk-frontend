@@ -1,12 +1,13 @@
 import {
   Avatar,
+  Box,
+  Container,
   Flex,
   Table,
   TableCaption,
   TableContainer,
   Tbody,
   Td,
-  Text,
   Th,
   Thead,
   Tr,
@@ -14,11 +15,11 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import React, { useCallback, useEffect, useRef } from 'react';
-import { Header } from '../components/Header/Header';
-import UserModal from '../components/UserModal/UserModal';
-import { useChatService } from '../context/ChatServiceContext';
+import { Header } from '../../components/Header/Header';
+import UserModal from '../../components/UserModal/UserModal';
+import { useChatService } from '../../context/ChatServiceContext';
 
-const Admin = () => {
+export default function Accounts() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { accounts, addAccount } = useChatService();
   const toast = useToast();
@@ -43,9 +44,9 @@ const Admin = () => {
 
   return (
     <>
-      <Flex direction="column" color={'teal'}>
-        <Header variant="actions" title={'Users'} action={onOpen} />
-        <TableContainer>
+      <Flex direction="column" color={'teal'} w={'full'} >
+        <Header variant="actions" title={'Accounts'} action={onOpen} />
+        <TableContainer >
           <Table variant={'simple'}>
             <TableCaption>Just a test</TableCaption>
             <Thead>
@@ -72,7 +73,7 @@ const Admin = () => {
       />
     </>
   );
-};
+}
 
 const TableHeader = () => (
   <Tr>
@@ -98,5 +99,3 @@ const TableRow = ({ id, username, email }) => (
     <Td>{'placeholder'}</Td>
   </Tr>
 );
-
-export default Admin;

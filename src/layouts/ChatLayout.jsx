@@ -1,11 +1,25 @@
-import { Flex, Spinner } from '@chakra-ui/react';
+import { Center, Flex, HStack, Spinner, VStack } from '@chakra-ui/react';
 import { LayoutGroup, motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
-import { useAuthService } from '../context/AuthServiceContext';
+import UsersBar from '../components/UsersBar';
 import { useChatService } from '../context/ChatServiceContext';
 
+const MainContainer = ({ children }) => (
+  <Flex
+    as={motion.div}
+    // mr={'10px'}
+    layout={true}
+    bg={'gray.900'}
+    direction={'column'}
+    h={'95vh'}
+    mt={'2.5vh'}
+    borderRadius={'15px'}
+    w={'full'}
+  >
+    {children}
+  </Flex>
+);
 export default function ChatLayout() {
   const {
     user,
@@ -17,8 +31,6 @@ export default function ChatLayout() {
     isLoading,
   } = useChatService();
 
-  const {websocketUrl } = useAuthService;
-
   // TODO: To ChatLayout, has nothing to do here
   if (isLoading) {
     return <Spinner />;
@@ -26,6 +38,7 @@ export default function ChatLayout() {
 
   return (
     <Flex
+      overscrollBehavior={'none'}
       bg={'gray.700'}
       w={'full'}
       h={'100vh'}
@@ -35,19 +48,10 @@ export default function ChatLayout() {
     >
       <LayoutGroup>
         <Sidebar user={user} />
-        <Flex
-          as={motion.div}
-          mr={'10px'}
-          layout={true}
-          bg={'gray.900'}
-          direction={'column'}
-          h={'95vh'}
-          mt={'2.5vh'}
-          borderRadius={'15px'}
-          w={'full'}
-        >
+        <MainContainer>
           <Outlet />
-        </Flex>
+        </MainContainer>
+        <UsersBar />
       </LayoutGroup>
     </Flex>
   );

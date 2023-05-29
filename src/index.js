@@ -11,6 +11,8 @@ import React, { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import App from './App';
 import AuthServiceProvider from './context/AuthServiceContext';
+import ChatServiceProvider from './context/ChatServiceContext';
+import DebugServiceProvider from './context/DebugServiceContext';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
 
@@ -28,7 +30,11 @@ root.render(
     <ChakraProvider theme={theme}>
       <ColorModeScript />
       <AuthServiceProvider>
-        <App />
+        <ChatServiceProvider url={'ws://localhost:8080/ws'}>
+          <DebugServiceProvider>
+            <App />
+          </DebugServiceProvider>
+        </ChatServiceProvider>
       </AuthServiceProvider>
     </ChakraProvider>
   </StrictMode>

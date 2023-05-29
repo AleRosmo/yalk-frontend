@@ -10,20 +10,19 @@ import {
 import { useAuthService } from './context/AuthServiceContext';
 import ChatServiceProvider from './context/ChatServiceContext';
 import ChatLayout from './layouts/ChatLayout';
-import Admin from './pages/Admin';
+import Accounts from './pages/Admin/Accounts';
+import Admin from './pages/Admin/Admin';
+import Users from './pages/Admin/Users';
 import Chat from './pages/Chat';
 import Login from './pages/Login';
-
 export default function App() {
-  const { websocketUrl, login, logout, validate } = useAuthService();
+  const { validate } = useAuthService();
 
   const router = createBrowserRouter([
     {
       path: '/',
       element: (
-        <ChatServiceProvider url={'ws://localhost:8080/ws'}>
           <ChatLayout />
-        </ChatServiceProvider>
       ),
       loader: () => validate(),
       errorElement: <AppError />,
@@ -32,7 +31,14 @@ export default function App() {
           path: '/chat/:id',
           element: <Chat />,
         },
-        { path: '/admin', element: <Admin /> },
+        {
+          path: '/admin',
+          element: <Admin />,
+          children: [
+            { path: '/admin/accounts', element: <Accounts /> },
+            { path: '/admin/users', element: <Users /> },
+          ],
+        },
       ],
     },
     {
@@ -47,7 +53,7 @@ export default function App() {
           })
           .catch(err => {
             console.log(err);
-            return err
+            return err;
           }),
     },
   ]);
@@ -59,19 +65,20 @@ export const AppError = () => {
   const navigate = useNavigate();
   const error = useRouteError();
 
-  useEffect(() => {
-    // TODO: Just return responses as { status: 200, statusText: 'OK' } or { status: 401, statusText: 'Unauthorized' } from backend
-    if (typeof error === 'string') {
-      return <Text>{error.toString()}</Text>;
-    }
-    if (typeof error.status !== undefined && error.status === 404) {
-      return <Text>'Error 404'</Text>;
-    }
-    if (
-      typeof error.response.status !== undefined &&
-      error.response.status === 401
-    ) {
-      navigate('/login');
-    }
-  }, []);
+  // useEffect(() => {
+  // }, []);
+
+  // TODO: Just return responses as { status: 200, statusText: 'OK' } or { status: 401, statusText: 'Unauthorized' } from backend
+  if (typeof error === 'string') {
+    return <Text>{error.toString()}</Text>;
+  }
+  if (typeof error.status !== undefined && error.status === 404) {
+    return <Text>'Error 404'</Text>;
+  }
+  if (
+    typeof error.response.status !== undefined &&
+    error.response.status === 401
+  ) {
+    navigate('/login');
+  }
 };

@@ -1,31 +1,27 @@
 // This component must
-import { Flex, IconButton, Text } from '@chakra-ui/react';
+import { Flex, HStack, IconButton, Text } from '@chakra-ui/react';
 import { BiLogOut } from 'react-icons/bi';
-import AuthService from '../../services/auth.service';
 import AvatarHover from '../AvatarHover/AvatarHover';
-function ProfileRow({ profile }) {
+function ProfileRow({ profile, variant, hasControls }) {
   return (
     <Flex
       w={'full'}
       p="10px"
       align={'center'}
       justify={'space-between'}
-      bg={'gray.700'}
-      rounded={'15px'}
+      background={'gray.800'}
+      rounded={variant === 'rounded' ? '15px' : 'none'}
     >
       {profile !== null ? (
-        <>
+        <Flex w={'full'} align={'center'}>
           <AvatarHover src={profile.avatarUrl} />
-          <Text color="white">{profile.displayName}</Text>
-          <IconButton
-            variant="ghost"
-            icon={<BiLogOut size="20" />}
-            // onClick={async () => {
-            //   await AuthService.logout();
-            //   window.location.replace('/login');
-            // }}
-          />
-        </>
+          <Text flexGrow={1} align={'center'} color="white">
+            {profile.displayName}
+          </Text>
+          {hasControls ? (
+            <IconButton variant="ghost" icon={<BiLogOut size="20" />} />
+          ) : null}
+        </Flex>
       ) : null}
     </Flex>
   );

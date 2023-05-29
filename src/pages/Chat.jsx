@@ -8,12 +8,12 @@ import {
   Textarea,
   useToast,
 } from '@chakra-ui/react';
-import { useChatService } from '../context/ChatServiceContext';
-
 import React, { useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { IconHeader } from '../components/IconHeader/IconHeader';
 import { MessageRow } from '../components/MessageRow/MessageRow';
+
+import { useChatService } from '../context/ChatServiceContext';
 
 export default function Chat() {
   const params = useParams();
@@ -21,7 +21,7 @@ export default function Chat() {
 
   const [messageTextValue, setMessageTextValue] = useState();
   const { chats, serverUsers, sendMessage } = useChatService();
-  
+
   const chatId = parseInt(params.id);
   const chat = chats.find(c => c.id === chatId);
 

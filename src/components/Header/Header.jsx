@@ -29,13 +29,17 @@ export function Header({ variant, title, action }) {
           bg={'teal'}
           w={'full'}
           px="10px"
-          borderTopRadius={'15px'}
+          // borderTopRadius={'15px'}
           align={'center'}
           gap={'8px'}
           justifyContent={'space-between'}
         >
           <Heading color={'gray.800'}>{title}</Heading>
-          <IconButton icon={<AddIcon color={'gray.800'}/>} variant={"ghost"} onClick={action}/>
+          <IconButton
+            icon={<AddIcon color={'gray.800'} />}
+            variant={'ghost'}
+            onClick={action}
+          />
         </Flex>
       );
   }

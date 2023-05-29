@@ -28,7 +28,7 @@ export default function ChatServiceProvider({ url, children }) {
     const data = payload.data;
 
     switch (payload.type) {
-      case 'chat_message':
+      case 'message':
         setChats(prevChats => {
           return prevChats.map(chat => {
             if (chat.id === data.chatId) {
@@ -62,14 +62,14 @@ export default function ChatServiceProvider({ url, children }) {
     setServerUsers(initialData.users);
     setChats(initialData.chats);
     setIsloading(false);
-    console.log(initialData);
   });
 
   // Send a "chat_message" event to the server with a message payload
   const sendMessage = useCallback((chatId, message) => {
     if (websocket.current && websocket.current.readyState === WebSocket.OPEN) {
       const payload = {
-        type: 'chat_message',
+        type: 'message',
+        action: 'send',
         data: {
           chatId: chatId,
           messageType: 'chat_message',
@@ -85,7 +85,8 @@ export default function ChatServiceProvider({ url, children }) {
   const addAccount = useCallback((email, username, password) => {
     if (websocket.current && websocket.current.readyState === WebSocket.OPEN) {
       const payload = {
-        type: 'account_create',
+        type: 'account',
+        action: 'create',
         data: {
           email: email,
           username: username,
@@ -103,6 +104,19 @@ export default function ChatServiceProvider({ url, children }) {
         data: {
           displayName: displayName,
           isAdmin: isAdmin,
+        },
+      };
+      websocket.current.send(JSON.stringify(payload));
+    }
+  });
+
+  const changeStatus = useCallback(statusName => {
+    if (websocket.current && websocket.current.readyState === WebSocket.OPEN) {
+      const payload = {
+        type: 'user',
+        action: 'change_status',
+        data: {
+          statusName: statusName,
         },
       };
       websocket.current.send(JSON.stringify(payload));
@@ -145,6 +159,7 @@ export default function ChatServiceProvider({ url, children }) {
         addAccount,
         addUser,
         isLoading,
+        changeStatus,
       }}
     >
       {children}

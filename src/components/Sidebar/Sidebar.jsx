@@ -1,6 +1,7 @@
 import {
   Accordion,
   Button,
+  Icon,
   IconButton,
   Skeleton,
   Spacer,
@@ -10,20 +11,22 @@ import { useToggle } from '../../hooks/useToggle';
 import ChatList from '../ChatList';
 import ProfileRow from '../ProfileRow/ProfileRow';
 
-import { ViewIcon } from '@chakra-ui/icons';
+import { ViewIcon, WarningTwoIcon } from '@chakra-ui/icons';
 import React from 'react';
 import { NavLink, useOutletContext } from 'react-router-dom';
-import { AddButton } from '../ChatList/ChatList';
+import { useDebug } from '../../context/DebugServiceContext';
 import { SidebarContainer } from './SidebarContainer';
 import { SidebarToggleButton } from './SidebarToggleButton';
-
 export default function Sidebar({ user }) {
   const context = useOutletContext();
+
   const [isSmall, toggleOpen] = useToggle();
+  const { onOpen } = useDebug();
 
   return (
     <SidebarContainer isSmall={isSmall}>
       <SidebarToggleButton toggleOpen={toggleOpen} />
+      <IconButton icon={<WarningTwoIcon />} onClick={onOpen} />
       <Accordion allowMultiple color="teal" w={'full'}>
         <ChatList
           type="channels"
@@ -36,10 +39,16 @@ export default function Sidebar({ user }) {
         />
       </Accordion>
       <Spacer />
-      <Button w="full" alignSelf={"center"} colorScheme="teal" leftIcon={<ViewIcon />} variant={"outline"}>
+      <Button
+        w="full"
+        alignSelf={'center'}
+        colorScheme="teal"
+        leftIcon={<ViewIcon />}
+        variant={'outline'}
+      >
         <NavLink to={'/admin'}>Admin</NavLink>
       </Button>
-      <ProfileRow profile={user} />
+      <ProfileRow profile={user} variant={'rounded'} hasControls={true} />
     </SidebarContainer>
   );
 }

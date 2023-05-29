@@ -1,4 +1,4 @@
-import { Flex, Heading, Text, VStack } from '@chakra-ui/react';
+import { Avatar, Flex, Heading, Text, VStack } from '@chakra-ui/react';
 
 import React, { useEffect, useRef } from 'react';
 import AvatarHover from '../AvatarHover/AvatarHover';
@@ -22,7 +22,7 @@ export const MessageRow = ({ user, content, isLastMessage }) => {
       color={'teal'}
       ref={isLastMessage ? lastMessageRef : null}
     >
-      <AvatarHover src={user.avatarUrl} />
+      <Avatar src={user.avatarUrl} />
       <VStack align={'left'}>
         <Heading fontSize={'20px'} fontWeight={'bold'}>
           {user.displayName}
