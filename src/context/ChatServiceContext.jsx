@@ -47,6 +47,9 @@ export default function ChatServiceProvider({ url, children }) {
         );
         break;
 
+      case 'user':
+        handleUser();
+
       case 'initial':
         initialize(data);
         break;
@@ -110,6 +113,14 @@ export default function ChatServiceProvider({ url, children }) {
     }
   });
 
+  const handleUser = useCallback((payload) => {
+    switch (payload.action) {
+      case 'statuy':
+
+        break
+    }
+  });
+
   const changeStatus = useCallback(statusName => {
     if (websocket.current && websocket.current.readyState === WebSocket.OPEN) {
       const payload = {
@@ -122,7 +133,6 @@ export default function ChatServiceProvider({ url, children }) {
       websocket.current.send(JSON.stringify(payload));
     }
   });
-
   // Connect Websocket at start
   useEffect(() => {
     websocket.current = new WebSocket(url);

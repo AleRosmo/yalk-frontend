@@ -10,7 +10,6 @@ export function useAuthService() {
 }
 
 export default function AuthServiceProvider({ children }) {
-  //   const websocketUrl = useRef(null);
 
   const login = useCallback(
     (email, password) =>

@@ -21,9 +21,7 @@ export default function App() {
   const router = createBrowserRouter([
     {
       path: '/',
-      element: (
-          <ChatLayout />
-      ),
+      element: <ChatLayout />,
       loader: () => validate(),
       errorElement: <AppError />,
       children: [
@@ -64,9 +62,6 @@ export default function App() {
 export const AppError = () => {
   const navigate = useNavigate();
   const error = useRouteError();
-
-  // useEffect(() => {
-  // }, []);
 
   // TODO: Just return responses as { status: 200, statusText: 'OK' } or { status: 401, statusText: 'Unauthorized' } from backend
   if (typeof error === 'string') {

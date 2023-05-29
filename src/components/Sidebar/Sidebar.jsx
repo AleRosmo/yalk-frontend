@@ -1,27 +1,21 @@
-import {
-  Accordion,
-  Button,
-  Icon,
-  IconButton,
-  Skeleton,
-  Spacer,
-  VStack,
-} from '@chakra-ui/react';
+import { Accordion, Button, IconButton, Spacer } from '@chakra-ui/react';
 import { useToggle } from '../../hooks/useToggle';
 import ChatList from '../ChatList';
 import ProfileRow from '../ProfileRow/ProfileRow';
 
 import { ViewIcon, WarningTwoIcon } from '@chakra-ui/icons';
 import React from 'react';
-import { NavLink, useOutletContext } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import { useAuthService } from '../../context/AuthServiceContext';
 import { useDebug } from '../../context/DebugServiceContext';
 import { SidebarContainer } from './SidebarContainer';
 import { SidebarToggleButton } from './SidebarToggleButton';
-export default function Sidebar({ user }) {
-  const context = useOutletContext();
 
+export default function Sidebar({ user }) {
   const [isSmall, toggleOpen] = useToggle();
   const { onOpen } = useDebug();
+
+  const { logout } = useAuthService();
 
   return (
     <SidebarContainer isSmall={isSmall}>
@@ -48,7 +42,12 @@ export default function Sidebar({ user }) {
       >
         <NavLink to={'/admin'}>Admin</NavLink>
       </Button>
-      <ProfileRow profile={user} variant={'rounded'} hasControls={true} />
+      <ProfileRow
+        profile={user}
+        variant={'rounded'}
+        hasControls={true}
+        logout={logout}
+      />
     </SidebarContainer>
   );
 }
