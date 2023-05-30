@@ -17,8 +17,8 @@ export default function ChatServiceProvider({ url, children }) {
   const [isLoading, setIsloading] = useState(true);
   const [chats, setChats] = useState([]);
   const [accounts, setAccounts] = useState([]);
-  const [serverUsers, setServerUsers] = useState(new Map());
-  const [user, setUser] = useState(null);
+  const [serverUsers, setServerUsers] = useState({});
+  const [currentUser, setCurrentUser] = useState({});
 
   // Must not trigger re-render so store websocket in useRef
   const websocket = useRef(null);
@@ -48,11 +48,15 @@ export default function ChatServiceProvider({ url, children }) {
         break;
 
       case 'user':
-        handleUser();
+        console.log('received a user event');
+        handleUser(payload);
+        break;
 
       case 'initial':
+        console.log('initializing');
         initialize(data);
         break;
+
       default:
         console.log(`Received unknown type: ${payload.type}`);
     }
@@ -60,7 +64,7 @@ export default function ChatServiceProvider({ url, children }) {
 
   // Initialize state with initial payload received
   const initialize = useCallback(initialData => {
-    setUser(initialData.user);
+    setCurrentUser(initialData.user);
     setAccounts(initialData.accounts);
     setServerUsers(initialData.users);
     setChats(initialData.chats);
@@ -113,13 +117,30 @@ export default function ChatServiceProvider({ url, children }) {
     }
   });
 
-  const handleUser = useCallback((payload) => {
-    switch (payload.action) {
-      case 'statuy':
-
-        break
-    }
-  });
+  const handleUser = useCallback(
+    payload => {
+      switch (payload.action) {
+        case 'change_status':
+          if (payload.data.userId === currentUser.userId) {
+            setCurrentUser(payload.data);
+          }
+          setServerUsers(prevUsers => {
+            // TODO: Must be simplified returnin payload.data
+            return prevUsers.map(user => {
+              if (user.userId === payload.data.userId) {
+                user.statusName = payload.data.statusName;
+              }
+              return user;
+            });
+          });
+          break;
+        default:
+          console.log(`Received unknown action: ${payload.action}`);
+          break;
+      }
+    },
+    [currentUser, serverUsers]
+  );
 
   const changeStatus = useCallback(statusName => {
     if (websocket.current && websocket.current.readyState === WebSocket.OPEN) {
@@ -161,7 +182,7 @@ export default function ChatServiceProvider({ url, children }) {
   return (
     <ChatServiceContext.Provider
       value={{
-        user,
+        currentUser,
         chats,
         accounts,
         serverUsers,

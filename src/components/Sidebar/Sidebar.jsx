@@ -11,7 +11,7 @@ import { useDebug } from '../../context/DebugServiceContext';
 import { SidebarContainer } from './SidebarContainer';
 import { SidebarToggleButton } from './SidebarToggleButton';
 
-export default function Sidebar({ user }) {
+export default function Sidebar({ currentUser }) {
   const [isSmall, toggleOpen] = useToggle();
   const { onOpen } = useDebug();
 
@@ -24,12 +24,12 @@ export default function Sidebar({ user }) {
       <Accordion allowMultiple color="teal" w={'full'}>
         <ChatList
           type="channels"
-          chats={user.chats.filter(chat => chat.chatType.type === 'channel')}
+          chats={currentUser.chats.filter(chat => chat.chatType.type === 'channel')}
         />
 
         <ChatList
           type="directs"
-          chats={user.chats.filter(chat => chat.chatType.type === 'direct')}
+          chats={currentUser.chats.filter(chat => chat.chatType.type === 'direct')}
         />
       </Accordion>
       <Spacer />
@@ -43,7 +43,7 @@ export default function Sidebar({ user }) {
         <NavLink to={'/admin'}>Admin</NavLink>
       </Button>
       <ProfileRow
-        profile={user}
+        profile={currentUser}
         variant={'rounded'}
         hasControls={true}
         logout={logout}

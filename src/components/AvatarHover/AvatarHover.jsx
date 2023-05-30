@@ -1,9 +1,9 @@
 import { Avatar, Box, Image } from '@chakra-ui/react';
 
-const AvatarHover = ({ src }) => {
+const AvatarHover = ({ profile }) => {
   return (
     <Avatar
-      src={src}
+      src={profile.avatarUrl}
       _hover={{
         transitionDuration: '100ms',
         opacity: 0.5,
@@ -16,8 +16,8 @@ const AvatarHover = ({ src }) => {
         maxW={'15px'}
         borderRadius={'full'}
         position="absolute"
-        src="/online.png"
-      ></Image>
+        src={`/${profile.statusName}.png`}
+      />
     </Avatar>
   );
 };

@@ -22,7 +22,7 @@ const MainContainer = ({ children }) => (
 );
 export default function ChatLayout() {
   const {
-    user,
+    currentUser,
     chats,
     accounts,
     serverUsers,
@@ -47,7 +47,7 @@ export default function ChatLayout() {
       color={'gray.800'}
     >
       <LayoutGroup>
-        <Sidebar user={user} />
+        <Sidebar />
         <MainContainer>
           <Outlet />
         </MainContainer>

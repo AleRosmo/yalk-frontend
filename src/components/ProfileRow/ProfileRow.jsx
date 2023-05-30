@@ -1,15 +1,19 @@
 // This component must
 import { Flex, IconButton, Text } from '@chakra-ui/react';
+import { useCallback } from 'react';
 import { BiLogOut } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 import AvatarHover from '../AvatarHover/AvatarHover';
+
+
 function ProfileRow({ profile, variant, hasControls, logout }) {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
+const handleLogout = useCallback(() => {
+  logout();
+  navigate('/login');
+});
+
 
   return (
     <Flex
@@ -22,7 +26,7 @@ function ProfileRow({ profile, variant, hasControls, logout }) {
     >
       {profile !== null ? (
         <Flex w={'full'} align={'center'}>
-          <AvatarHover src={profile.avatarUrl} />
+          <AvatarHover profile={profile} />
           <Text flexGrow={1} align={'center'} color="white">
             {profile.displayName}
           </Text>

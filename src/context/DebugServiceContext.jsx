@@ -21,7 +21,7 @@ const DebugServiceContext = createContext();
 
 export default function DebugServiceProvider({ children }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { changeStatus } = useChatService();
+  const { changeStatus, currentUser, serverUsers } = useChatService();
   const [isLoading, setIsLoading] = useState();
 
   const DebugModal = (
@@ -51,13 +51,35 @@ export default function DebugServiceProvider({ children }) {
             m={'5px'}
             isLoading={isLoading}
             onClick={() => {
-              //   setIsLoading(true);
+              changeStatus('online');
+            }}
+            color={'green'}
+            fontSize={'5xl'}
+            variant={'link'}
+            _hover={{
+              textDecoration: 'none',
+            }}
+          >
+            •
+          </Button>
+          <Button
+            m={'5px'}
+            isLoading={isLoading}
+            onClick={() => {
               changeStatus('busy');
             }}
-            variant={'outline'}
+            color={'red'}
+            fontSize={'5xl'}
+            variant={'link'}
+            _hover={{
+              textDecoration: 'none',
+            }}
           >
-            Change Status
+            •
           </Button>
+          <Button onClick={() => {console.log(currentUser)}}>Log Current User</Button>
+          <Button onClick={() => {console.log(serverUsers)}}>Log Server Users</Button>
+
         </ModalBody>
 
         <ModalFooter>

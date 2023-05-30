@@ -8,7 +8,12 @@ export default function UsersBar() {
   const { serverUsers } = useChatService();
   return (
     <UsersBarContainer>
-      <Heading bg={'teal'} textAlign={'center'} w={'full'} borderTopRadius={"15px"}>
+      <Heading
+        bg={'teal'}
+        textAlign={'center'}
+        w={'full'}
+        borderTopRadius={'15px'}
+      >
         Users
       </Heading>
       <Flex
@@ -20,9 +25,9 @@ export default function UsersBar() {
         alignItems={'flex-start'}
         overflowX={'scroll'}
       >
-        {serverUsers.map(profile => (
-          <ProfileRow key={profile.id} profile={profile}/>
-        ))}
+        {serverUsers.map(user => {
+          return <ProfileRow key={user.userId} profile={user} />;
+        })}
       </Flex>
     </UsersBarContainer>
   );
