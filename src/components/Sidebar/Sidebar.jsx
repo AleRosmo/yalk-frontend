@@ -1,4 +1,4 @@
-import { Accordion, Button, IconButton, Spacer } from '@chakra-ui/react';
+import { Accordion, Button, Icon, IconButton, Spacer } from '@chakra-ui/react';
 import { useToggle } from '../../hooks/useToggle';
 import ChatList from '../ChatList';
 import ProfileRow from '../ProfileRow/ProfileRow';
@@ -24,24 +24,39 @@ export default function Sidebar({ currentUser }) {
       <Accordion allowMultiple color="teal" w={'full'}>
         <ChatList
           type="channels"
-          chats={currentUser.chats.filter(chat => chat.chatType.type === 'channel')}
+          chats={currentUser.chats.filter(
+            chat => chat.chatType.type === 'channel'
+          )}
         />
 
         <ChatList
           type="directs"
-          chats={currentUser.chats.filter(chat => chat.chatType.type === 'direct')}
+          chats={currentUser.chats.filter(
+            chat => chat.chatType.type === 'direct'
+          )}
         />
       </Accordion>
       <Spacer />
-      <Button
-        w="full"
-        alignSelf={'center'}
-        colorScheme="teal"
-        leftIcon={<ViewIcon />}
-        variant={'outline'}
-      >
-        <NavLink to={'/admin'}>Admin</NavLink>
-      </Button>
+      <NavLink to={'/admin'}>
+        {isSmall ? (
+          <IconButton
+            alignSelf={'center'}
+            colorScheme="teal"
+            icon={<ViewIcon />}
+            variant={'ghost'}
+          />
+        ) : (
+          <Button
+            w="full"
+            alignSelf={'center'}
+            colorScheme="teal"
+            leftIcon={<ViewIcon />}
+            variant={'outline'}
+          >
+            Admin
+          </Button>
+        )}
+      </NavLink>
       <ProfileRow
         profile={currentUser}
         variant={'rounded'}
