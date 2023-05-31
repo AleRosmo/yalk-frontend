@@ -3,7 +3,7 @@ import { AccordionItem, AccordionPanel, IconButton } from '@chakra-ui/react';
 import { ChatListHeading } from './ChatListHeading';
 import { ChatListNavLink } from './ChatListNavLink';
 
-export const ChatList = ({ type, chats }) => (
+export const ChatList = ({ type, chats, isSmall }) => (
   <AccordionItem>
     <ChatListHeading type={type} />
     <AccordionPanel pb={4}>
