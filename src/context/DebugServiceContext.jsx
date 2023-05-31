@@ -1,6 +1,7 @@
 import {
   Button,
   Divider,
+  HStack,
   Heading,
   Modal,
   ModalBody,
@@ -8,6 +9,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  VStack,
   useDisclosure,
 } from '@chakra-ui/react';
 import React, { createContext, useContext, useState } from 'react';
@@ -44,47 +46,52 @@ export default function DebugServiceProvider({ children }) {
           alignSelf={'center'}
         />
         <ModalBody>
-          <Heading size={'sm'} m={'5px'}>
-            Change Status
-          </Heading>
+          <HStack>
+            <Heading size={'sm'} m={'5px'}>
+              Change Status
+            </Heading>
+            <DebugStatusButton
+              isLoading={isLoading}
+              changeStatus={changeStatus}
+              status={'online'}
+              color={'green'}
+            />
+            <DebugStatusButton
+              isLoading={isLoading}
+              changeStatus={changeStatus}
+              status={'busy'}
+              color={'red'}
+            />
+            <DebugStatusButton
+              isLoading={isLoading}
+              changeStatus={changeStatus}
+              status={'away'}
+              color={'yellow'}
+            />
+            <DebugStatusButton
+              isLoading={isLoading}
+              changeStatus={changeStatus}
+              status={'offline'}
+              color={'gray'}
+            />
+          </HStack>
           <Button
-            m={'5px'}
-            isLoading={isLoading}
             onClick={() => {
-              changeStatus('online');
-            }}
-            color={'green'}
-            fontSize={'5xl'}
-            variant={'link'}
-            _hover={{
-              textDecoration: 'none',
+              console.log(currentUser);
             }}
           >
-            •
+            Log Current User
           </Button>
           <Button
-            m={'5px'}
-            isLoading={isLoading}
             onClick={() => {
-              changeStatus('busy');
-            }}
-            color={'red'}
-            fontSize={'5xl'}
-            variant={'link'}
-            _hover={{
-              textDecoration: 'none',
+              console.log(serverUsers);
             }}
           >
-            •
+            Log Server Users
           </Button>
-          <Button onClick={() => {console.log(currentUser)}}>Log Current User</Button>
-          <Button onClick={() => {console.log(serverUsers)}}>Log Server Users</Button>
-
         </ModalBody>
 
-        <ModalFooter>
-          {/* <Button variant="ghost">Secondary Action</Button> */}
-        </ModalFooter>
+        <ModalFooter></ModalFooter>
       </ModalContent>
     </Modal>
   );
@@ -96,5 +103,25 @@ export default function DebugServiceProvider({ children }) {
         {children}
       </>
     </DebugServiceContext.Provider>
+  );
+}
+
+function DebugStatusButton({ isLoading, changeStatus, status, color }) {
+  return (
+    <Button
+      m={'5px'}
+      isLoading={isLoading}
+      onClick={() => {
+        changeStatus(status);
+      }}
+      color={color}
+      fontSize={'5xl'}
+      variant={'link'}
+      _hover={{
+        textDecoration: 'none',
+      }}
+    >
+      •
+    </Button>
   );
 }
