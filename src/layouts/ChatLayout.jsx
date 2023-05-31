@@ -1,4 +1,4 @@
-import { Center, Flex, HStack, Spinner, VStack } from '@chakra-ui/react';
+import { Flex, Spinner } from '@chakra-ui/react';
 import { LayoutGroup, motion } from 'framer-motion';
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
@@ -47,7 +47,7 @@ export default function ChatLayout() {
       color={'gray.800'}
     >
       <LayoutGroup>
-        <Sidebar />
+        <Sidebar currentUser={currentUser} />
         <MainContainer>
           <Outlet />
         </MainContainer>

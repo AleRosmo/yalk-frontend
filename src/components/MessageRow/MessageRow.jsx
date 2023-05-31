@@ -1,9 +1,9 @@
-import { Avatar, Flex, Heading, Text, VStack } from '@chakra-ui/react';
+import { Avatar, Flex, HStack, Heading, Text, VStack } from '@chakra-ui/react';
 
 import React, { useEffect, useRef } from 'react';
 import AvatarHover from '../AvatarHover/AvatarHover';
 
-export const MessageRow = ({ user, content, isLastMessage }) => {
+export const MessageRow = ({ user, timestamp, content, isLastMessage }) => {
   const lastMessageRef = useRef(null);
 
   useEffect(() => {
@@ -23,12 +23,22 @@ export const MessageRow = ({ user, content, isLastMessage }) => {
       ref={isLastMessage ? lastMessageRef : null}
     >
       <Avatar src={user.avatarUrl} />
+
       <VStack align={'left'}>
-        <Heading fontSize={'20px'} fontWeight={'bold'}>
-          {user.displayName}
-        </Heading>
+        <MessageRowHeader timestamp={timestamp} user={user}/>
         <Text>{content}</Text>
       </VStack>
     </Flex>
+  );
+};
+
+const MessageRowHeader = ({ timestamp, user }) => {
+  return (
+    <HStack>
+      <Heading fontSize={'20px'} fontWeight={'bold'}>
+        {user.displayName}
+      </Heading>
+      <Text fontSize={"xs"}>{timestamp}</Text>
+    </HStack>
   );
 };

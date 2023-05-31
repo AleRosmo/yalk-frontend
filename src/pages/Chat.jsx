@@ -47,14 +47,18 @@ export default function Chat() {
             isLastMessage={true}
           />
         ) : (
-          chat.messages.map((message, index) => (
-            <MessageRow
-              key={message.id}
-              user={message.user}
-              content={message.content}
-              isLastMessage={index === chat.messages.length - 1}
-            />
-          ))
+          chat.messages.map((message, index) => {
+            const convertedTimestamp = convertTimestamp(message.timestamp);
+            return (
+              <MessageRow
+                key={message.id}
+                user={message.user}
+                timestamp={convertedTimestamp}
+                content={message.content}
+                isLastMessage={index === chat.messages.length - 1}
+              />
+            );
+          })
         )}
         <Spacer />
       </Flex>
@@ -74,4 +78,17 @@ export default function Chat() {
       </Box>
     </>
   );
+}
+
+function convertTimestamp(timestamp) {
+  const date = new Date(timestamp);
+  const options = {
+    day: 'numeric',
+    month: 'short',
+    hour: 'numeric',
+    minute: 'numeric',
+    timeZone: 'UTC',
+  };
+
+  return date.toLocaleDateString('en-US', options);
 }
