@@ -14,11 +14,11 @@ export function useChatService() {
 }
 
 export default function ChatServiceProvider({ url, children }) {
-  const [isLoading, setIsloading] = useState(true);
   const [chats, setChats] = useState([]);
   const [accounts, setAccounts] = useState([]);
   const [serverUsers, setServerUsers] = useState({});
-  const [currentUser, setCurrentUser] = useState({});
+  const [currentUser, setCurrentUser] = useState(null);
+  const [isLoading, setIsloading] = useState(true);
 
   // Must not trigger re-render so store websocket in useRef
   const websocket = useRef(null);
@@ -28,6 +28,11 @@ export default function ChatServiceProvider({ url, children }) {
     const data = payload.data;
 
     switch (payload.type) {
+      case 'initial':
+        console.log('initializing');
+        initialize(data);
+        break;
+
       case 'message':
         setChats(prevChats => {
           return prevChats.map(chat => {
@@ -40,21 +45,29 @@ export default function ChatServiceProvider({ url, children }) {
         console.log(`received a chat message ${payload}`);
         break;
 
+      case 'user':
+        console.log('received a user event');
+        setCurrentUser(currentUser =>
+          payload.data.userId === currentUser.userId
+            ? payload.data
+            : currentUser
+        );
+        setServerUsers(prevServerUsers => {
+          // TODO: Must be simplified returnin payload.data
+          return prevServerUsers.map(user => {
+            if (user.userId === payload.data.userId) {
+              user.statusName = payload.data.statusName;
+            }
+            return user;
+          });
+        });
+        break;
+
       case 'account_create':
         setAccounts(prevAccounts => [...prevAccounts, data]);
         console.log(
           `received an account create for ${data.id} with name ${data.name}`
         );
-        break;
-
-      case 'user':
-        console.log('received a user event');
-        handleUser(payload);
-        break;
-
-      case 'initial':
-        console.log('initializing');
-        initialize(data);
         break;
 
       default:
@@ -121,18 +134,6 @@ export default function ChatServiceProvider({ url, children }) {
     payload => {
       switch (payload.action) {
         case 'change_status':
-          if (payload.data.userId === currentUser.userId) {
-            setCurrentUser(payload.data);
-          }
-          setServerUsers(prevUsers => {
-            // TODO: Must be simplified returnin payload.data
-            return prevUsers.map(user => {
-              if (user.userId === payload.data.userId) {
-                user.statusName = payload.data.statusName;
-              }
-              return user;
-            });
-          });
           break;
         default:
           console.log(`Received unknown action: ${payload.action}`);
@@ -154,6 +155,7 @@ export default function ChatServiceProvider({ url, children }) {
       websocket.current.send(JSON.stringify(payload));
     }
   });
+
   // Connect Websocket at start
   useEffect(() => {
     websocket.current = new WebSocket(url);
@@ -165,6 +167,7 @@ export default function ChatServiceProvider({ url, children }) {
 
     websocket.current.onclose = event => {
       console.log(`WebSocket connection closed with code ${event.code}`);
+      
     };
 
     websocket.current.onmessage = event => {
