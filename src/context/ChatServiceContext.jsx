@@ -24,59 +24,63 @@ export default function ChatServiceProvider({ url, children }) {
   const websocket = useRef(null);
 
   // Handle Incoming Message
-  const handleIncomingPayload = useCallback(payload => {
-    if (isLoading && payload.type != 'initial') {
-      return null;
-    }
-    const data = payload.data;
+  const handleIncomingPayload = useCallback(
+    payload => {
+      if (isLoading && payload.type != 'initial') {
+        return null;
+      }
+      const data = payload.data;
 
-    switch (payload.type) {
-      case 'initial':
-        console.log('initializing');
-        initialize(data);
-        break;
+      switch (payload.type) {
+        case 'initial':
+          console.log('initializing');
+          initialize(data);
+          break;
 
-      case 'message':
-        setChats(prevChats => {
-          return prevChats.map(chat => {
-            if (chat.id === data.chatId) {
-              chat.messages.push(data);
-            }
-            return chat;
+        case 'message':
+          setChats(prevChats => {
+            return prevChats.map(chat => {
+              const lastMessage = chat.messages.at(-1);
+              if (chat.id === data.chatId && lastMessage !== data) {
+                chat.messages.push(data);
+              }
+              return chat;
+            });
           });
-        });
-        console.log(`received a chat message ${payload}`);
-        break;
+          console.log(`received a chat message ${payload}`);
+          break;
 
-      case 'user':
-        console.log('received a user event');
-        setCurrentUser(currentUser =>
-          payload.data.userId === currentUser.userId
-            ? payload.data
-            : currentUser
-        );
-        setServerUsers(prevServerUsers => {
-          // TODO: Must be simplified returnin payload.data
-          return prevServerUsers.map(user => {
-            if (user.userId === payload.data.userId) {
-              user.statusName = payload.data.statusName;
-            }
-            return user;
+        case 'user':
+          console.log('received a user event');
+          setCurrentUser(currentUser =>
+            payload.data.userId === currentUser.userId
+              ? payload.data
+              : currentUser
+          );
+          setServerUsers(prevServerUsers => {
+            // TODO: Must be simplified returnin payload.data
+            return prevServerUsers.map(user => {
+              if (user.userId === payload.data.userId) {
+                user.statusName = payload.data.statusName;
+              }
+              return user;
+            });
           });
-        });
-        break;
+          break;
 
-      case 'account_create':
-        setAccounts(prevAccounts => [...prevAccounts, data]);
-        console.log(
-          `received an account create for ${data.id} with name ${data.name}`
-        );
-        break;
+        case 'account_create':
+          setAccounts(prevAccounts => [...prevAccounts, data]);
+          console.log(
+            `received an account create for ${data.id} with name ${data.name}`
+          );
+          break;
 
-      default:
-        console.log(`Received unknown type: ${payload.type}`);
-    }
-  }, [isLoading]);
+        default:
+          console.log(`Received unknown type: ${payload.type}`);
+      }
+    },
+    [isLoading]
+  );
 
   // Initialize state with initial payload received
   const initialize = useCallback(initialData => {
