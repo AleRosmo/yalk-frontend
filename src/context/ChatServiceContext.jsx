@@ -163,11 +163,11 @@ export default function ChatServiceProvider({ url, children }) {
     websocket.current.onopen = event => {
       console.log('websocket opened connection successfully');
       console.log(event.target);
-      websocket.current.send(
-        JSON.stringify({
-          type: 'initial',
-        })
-      );
+      // websocket.current.send(
+      //   JSON.stringify({
+      //     type: 'initial',
+      //   })
+      // );
     };
 
     websocket.current.onclose = event => {
