@@ -172,6 +172,7 @@ export default function ChatServiceProvider({ url, children }) {
 
     websocket.current.onclose = event => {
       console.log(`WebSocket connection closed with code ${event.code}`);
+      
     };
 
     websocket.current.onmessage = event => {
