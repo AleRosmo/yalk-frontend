@@ -25,6 +25,9 @@ export default function ChatServiceProvider({ url, children }) {
 
   // Handle Incoming Message
   const handleIncomingPayload = useCallback(payload => {
+    if (isLoading && payload.type != 'initial') {
+      return null;
+    }
     const data = payload.data;
 
     switch (payload.type) {
@@ -73,7 +76,7 @@ export default function ChatServiceProvider({ url, children }) {
       default:
         console.log(`Received unknown type: ${payload.type}`);
     }
-  }, []);
+  }, [isLoading]);
 
   // Initialize state with initial payload received
   const initialize = useCallback(initialData => {
@@ -172,7 +175,6 @@ export default function ChatServiceProvider({ url, children }) {
 
     websocket.current.onclose = event => {
       console.log(`WebSocket connection closed with code ${event.code}`);
-      
     };
 
     websocket.current.onmessage = event => {
