@@ -27,7 +27,7 @@ export default function Chat() {
 
   // TODO: Custom hook?
   const handleKeyPress = event => {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && messageTextValue && messageTextValue !== "") { // TODO: check for empty not working if \n.
       event.preventDefault();
       sendMessage(chat.id, messageTextValue);
       setMessageTextValue('');
