@@ -8,31 +8,22 @@ import {
   Textarea,
   useToast,
 } from '@chakra-ui/react';
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import { IconHeader } from '../components/IconHeader/IconHeader';
-import { MessageRow } from '../components/MessageRow/MessageRow';
-
-import { useChatService } from '../context/ChatServiceContext';
-
+import { IconHeader } from '../../components/IconHeader/IconHeader';
+import { MessageRow } from '../../components/MessageRow/MessageRow';
+import { useChatService } from '../../context/ChatServiceContext';
+import { ChatTextarea } from './ChatTextarea';
 export default function Chat() {
   const params = useParams();
+  const chatId = parseInt(params.id);
+
+  const { chats, serverUsers, sendMessage } = useChatService();
   const chatContainer = useRef(null);
 
-  const [messageTextValue, setMessageTextValue] = useState();
-  const { chats, serverUsers, sendMessage } = useChatService();
-
-  const chatId = parseInt(params.id);
   const chat = chats.find(c => c.id === chatId);
 
   // TODO: Custom hook?
-  const handleKeyPress = event => {
-    if (event.key === 'Enter' && messageTextValue && messageTextValue !== "") { // TODO: check for empty not working if \n.
-      event.preventDefault();
-      sendMessage(chat.id, messageTextValue);
-      setMessageTextValue('');
-    }
-  };
 
   return (
     <>
@@ -62,20 +53,7 @@ export default function Chat() {
         )}
         <Spacer />
       </Flex>
-      <Box margin={'10px'}>
-        <Textarea
-          // borderColor={'gray.400'}
-          color={'teal.300'}
-          background={'gray.800'}
-          // variant={'outlined'}
-          resize={'none'}
-          onChange={e => setMessageTextValue(e.target.value)}
-          value={messageTextValue}
-          onKeyDown={handleKeyPress}
-          placeholder={'Type something..'}
-          _placeholder={{ color: 'teal.700' }}
-        />
-      </Box>
+      <ChatTextarea chatId={chat.id} />
     </>
   );
 }
