@@ -13,7 +13,7 @@ import ChatLayout from './layouts/ChatLayout';
 import Accounts from './pages/Admin/Accounts';
 import Admin from './pages/Admin/Admin';
 import Users from './pages/Admin/Users';
-import Chat from './pages/Chat';
+import Chat from './pages/Chat/Chat';
 import Login from './pages/Login';
 export default function App() {
   const { validate } = useAuthService();
