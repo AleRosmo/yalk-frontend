@@ -1,6 +1,6 @@
 import { AtSignIcon, ChatIcon } from '@chakra-ui/icons';
 import { AccordionButton, AccordionIcon, Box, Heading } from '@chakra-ui/react';
-import { AddButton } from './ChatList';
+import { NewChatButton } from "./NewChatButton";
 
 export const ChatListHeading = ({ type }) => {
   return (
@@ -20,7 +20,7 @@ export const ChatListHeading = ({ type }) => {
             <AccordionIcon />
           </Heading>
         </Box>
-        <AddButton />
+        <NewChatButton />
       </AccordionButton>
     </Heading>
   );

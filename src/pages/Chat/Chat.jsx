@@ -43,7 +43,7 @@ export default function Chat() {
             return (
               <MessageRow
                 key={message.id}
-                user={message.user}
+                user={serverUsers.find(u => u.userId === message.userId)}
                 timestamp={convertedTimestamp}
                 content={message.content}
                 isLastMessage={index === chat.messages.length - 1}

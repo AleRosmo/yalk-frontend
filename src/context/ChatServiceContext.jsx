@@ -1,3 +1,4 @@
+import { createStandaloneToast, useToast } from '@chakra-ui/react';
 import React, {
   createContext,
   useCallback,
@@ -19,6 +20,8 @@ export default function ChatServiceProvider({ url, children }) {
   const [serverUsers, setServerUsers] = useState({});
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoading, setIsloading] = useState(true);
+  
+  const {toast} = createStandaloneToast();
 
   // Must not trigger re-render so store websocket in useRef
   const websocket = useRef(null);
@@ -30,6 +33,14 @@ export default function ChatServiceProvider({ url, children }) {
         return null;
       }
       const data = payload.data;
+
+      toast({
+        title: 'Data received',
+        status: 'success',
+        duration: 3000,
+        position: 'bottom-right',
+        description: JSON.stringify(payload),
+      });
 
       switch (payload.type) {
         case 'initial':

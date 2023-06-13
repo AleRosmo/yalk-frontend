@@ -10,6 +10,7 @@ const AvatarHover = ({ profile }) => {
         cursor: 'pointer',
       }}
     >
+    {/* // TODO: Change to AvatarBadge in ChakraUI it's literally made for that  */}
       <Image
         right="0px"
         top="35px"
