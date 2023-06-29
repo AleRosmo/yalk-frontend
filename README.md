@@ -1,7 +1,17 @@
 1. `json-server -p 4000 data/db.json -w`
 2. `npm start`
 
+## To-Do
+- [ ] Get User Add functions to working state
+- [ ] Create initial landing page (With Chat List or Dashboard)
+- [ ] Render Users list when new user is added
 
+## Known bugs
+- [ ] After login redirect doesn't work
+- [ ] Initial DB configuration breaks the app
+- [ ] Root path doesn't redirect anywhere
+- [ ] If user is in no chat, it just breaks
+- [ ] Toast component shows for everyone, should be only admins
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
