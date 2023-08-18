@@ -30,7 +30,7 @@ root.render(
     <ChakraProvider theme={theme}>
       <ColorModeScript />
       <AuthServiceProvider>
-        <ChatServiceProvider url={'ws://127.0.0.1:8080/ws'}>
+        <ChatServiceProvider url={'ws://localhost:8080/ws'}>
           <DebugServiceProvider>
             <App />
           </DebugServiceProvider>
