@@ -10,7 +10,7 @@
             "runtimeArgs": [
                 "start"
             ],
-            "runtimeExecutable": "npm",
+            "runtimeExecutable": "yarn",
             "skipFiles": [
                 "<node_internals>/**"
             ],
